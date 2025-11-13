@@ -36,6 +36,13 @@ const TestPage = () => {
       >
         EVD
       </button>
+       <button
+        onClick={() => navigate("/modules/com3")}
+        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
+      >
+        COM3
+      </button>
+
     </div>
   );
 };
