@@ -42,6 +42,12 @@ const TestPage = () => {
       >
         TabBar
       </button>
+      <button
+        onClick={() => navigate("/modules/searchBar")}
+        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
+      >
+        SearchBar
+      </button>
 
     </div>
   );

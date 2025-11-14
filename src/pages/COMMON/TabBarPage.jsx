@@ -1,5 +1,5 @@
 import React from "react";
-import COM3TabBar from "../../components/common/TabBar";
+import TabBar from "../../components/common/TabBar";
 
 const TabBarPage = () => {
   return (
@@ -9,7 +9,7 @@ const TabBarPage = () => {
         <span className="text-white text-lg font-semibold">In:Form</span>
       </header>
 
-      <COM3TabBar />
+      <TabBar />
 
       <main className="p-8">
         <p className="text-gray-600 text-sm">

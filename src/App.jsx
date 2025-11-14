@@ -7,6 +7,8 @@ import CBDPage from "./pages/CBD/CBDPage";
 import HOMPage from "./pages/HOM/HOMPage";
 import TestPage from "./pages/TEST/TestPage";
 import TabBarPage from "./pages/COMMON/TabBarPage";
+import SearchBarPage from "./pages/COMMON/SearchBarPage";
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         </Route>
         <Route path="modules">
           <Route path="tabBar" element={<TabBarPage />} />
+          <Route path="searchBar" element={<SearchBarPage />} />
         </Route>
         <Route path="test" element={<TestPage />} />
       </Routes>
