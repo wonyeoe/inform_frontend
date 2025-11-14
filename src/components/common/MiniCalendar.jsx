@@ -82,6 +82,8 @@ const MiniCalendar = () => {
         </button>
       </div>
 
+      <div className="border-b border-gray-200 mb-4" />
+
       {/* 요일 헤더 */}
       <div className="grid grid-cols-7 text-center text-xs mb-2">
         {dayLabels.map((label, idx) => (
