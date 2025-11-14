@@ -10,6 +10,8 @@ import SearchBarPage from "./pages/COMMON/SearchBarPage";
 import HeaderPage from "./pages/COMMON/HeaderPage";
 import NotFoundPage from "./pages/NOT/NotFoundPage";
 import MiniCalendarPage from "./pages/COMMON/MiniCalendarPage";
+import EventRowPage from "./pages/EVL/EventRowPage";
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route path="searchBar" element={<SearchBarPage />} />
           <Route path="header" element={<HeaderPage />} />
           <Route path="miniCalendar" element={<MiniCalendarPage/>}/>
+          <Route path="eventRow" element={<EventRowPage />} />
         </Route>
         <Route path="test" element={<TestPage />} />
         <Route path="" element={<NotFoundPage />} />
