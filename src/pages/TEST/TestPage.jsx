@@ -66,7 +66,12 @@ const TestPage = () => {
       >
         EventRow
       </button>
-
+      <button
+        onClick={() => navigate("/modules/mainCalendar")}
+        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
+      >
+        MainCalendar
+      </button>
     </div>
   );
 };
