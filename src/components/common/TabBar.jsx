@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
     탭: 캘린더(/), 게시판(/events), 동아리(/clubs)
  */
 
-const COM3TabBar = () => {
+const TabBar = () => {
   const tabs = [
     { id: "calendar", label: "캘린더", to: "/" },
     { id: "board", label: "게시판", to: "/events" },
@@ -45,4 +45,4 @@ const COM3TabBar = () => {
   );
 };
 
-export default COM3TabBar;
+export default TabBar;

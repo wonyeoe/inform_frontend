@@ -6,7 +6,7 @@ import EVDPage from "./pages/EVD/EVDPage";
 import CBDPage from "./pages/CBD/CBDPage";
 import HOMPage from "./pages/HOM/HOMPage";
 import TestPage from "./pages/TEST/TestPage";
-import COM3Page from "./pages/COMMON/COM3Page";
+import TabBarPage from "./pages/COMMON/TabBarPage";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <Route path="detail" element={<EVDPage />} />
         </Route>
         <Route path="modules">
-          <Route path="com3" element={<COM3Page />} />
+          <Route path="tabBar" element={<TabBarPage />} />
         </Route>
         <Route path="test" element={<TestPage />} />
       </Routes>
