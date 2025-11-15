@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/*
+* 여기에 색상 확정 시 색상 키워드 정리 
+각 생상으로 통일 작업 진행 
+*/
+@theme {
+  --color-primary: #1d2745;
+  --color-secondary: #1de5d4;
+  --radius-primary-button: 5px;
+}
