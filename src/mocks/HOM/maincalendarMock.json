@@ -1,0 +1,43 @@
+{
+  "articles": [
+    {
+      "title": "데이터 기획 공모전",
+      "start_at": "2025-03-10.",
+      "end_at": "2025-04-10.",
+      "created": "2025-03-05.",
+      "updated": "2025-03-09.",
+      "vendors": {
+        "vendor_name": "IBAS"
+      },
+      "categories": {
+        "category_name": null
+      }
+    },
+    {
+      "title": "GOAT 참가자 모집",
+      "start_at": "2025-11-01.",
+      "end_at": "2025-11-14.",
+      "created": "2025-10-29.",
+      "updated": "2025-11-01.",
+      "vendors": {
+        "vendor_name": "GDGOC"
+      },
+      "categories": {
+        "category_name": "CLUB"
+      }
+    },
+    {
+      "title": "[특강] Physical AI와 미래 (11.12.수. 15:00, 60주년-1401B호)",
+      "start_at": "2025.11.10.",
+      "end_at": "2025.11.23.",
+      "created": "2025.11.07.",
+      "updated": "2025.11.07.",
+      "vendors": {
+        "vendor_name": "소프트웨어중심대학사업단"
+      },
+      "categories": {
+        "category_name": "LECTURE"
+      }
+    }
+  ]
+}
