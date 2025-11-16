@@ -12,6 +12,10 @@ import NotFoundPage from "./pages/NOT/NotFoundPage";
 import MiniCalendarPage from "./pages/COMMON/MiniCalendarPage";
 import EventRowPage from "./pages/EVL/EventRowPage";
 import MainCalendarPage from "./pages/HOM/MainCalendarPage";
+import EventDetailPage from "./pages/EVD/EventDetailPage";
+import ServiceLinkPage from "./pages/COMMON/ServiceLinkPage";
+import ImminentEventsPage from "./pages/HOM/ImminentEventsPage";
+
 
 function App() {
   return (
@@ -33,6 +37,9 @@ function App() {
           <Route path="miniCalendar" element={<MiniCalendarPage/>}/>
           <Route path="eventRow" element={<EventRowPage />} />        
           <Route path="mainCalendar" element={<MainCalendarPage/>}/>
+          <Route path="eventDetail" element={<EventDetailPage />} />   
+          <Route path="serviceLink" element={<ServiceLinkPage/>} />
+          <Route path="imminentEvents" element={<ImminentEventsPage/>} />     
         </Route>
         <Route path="test" element={<TestPage />} />
         <Route path="" element={<NotFoundPage />} />
