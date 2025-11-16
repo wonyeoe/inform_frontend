@@ -1,28 +1,16 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import CalendarCell from "./CalendarCell";
 import EventBar from "./EventBar";
-
-// 날짜를 YYYY-MM-DD 형식으로 변환
-const formatDateKey = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-// 두 날짜가 같은 날인지 확인
-const isSameDate = (a, b) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate();
+import { formatDateKey, isSameDate, parseDate } from "../../utils/dateUtil";
 
 /**
  * WeekRow - 한 주(7일)의 날짜와 이벤트 바들을 렌더링
  * @param {Array} week - 7개의 날짜 객체 배열 [{date, inCurrentMonth}, ...]
  * @param {Object} eventsByDate - 날짜별 이벤트 맵
  * @param {Date} today - 오늘 날짜
+ * @param {Function} onDateClick - 날짜 클릭 핸들러
  */
-const WeekRow = ({ week, eventsByDate, today }) => {
+const WeekRow = ({ week, eventsByDate, today, onDateClick }) => {
   // 이 주에 걸치는 이벤트들을 분석하고 배치 정보 계산
   const eventBars = useMemo(() => {
     const bars = [];
@@ -33,7 +21,7 @@ const WeekRow = ({ week, eventsByDate, today }) => {
 
       const { date } = cellData;
       const dateKey = formatDateKey(date);
-      const dayEvents = eventsByDate[dateKey] || [];
+      const dayEvents = eventsByDate[dateKey] || []; //
 
       dayEvents.forEach((event) => {
         const eventId = `${event.title}-${event.start_at}`;
@@ -43,8 +31,8 @@ const WeekRow = ({ week, eventsByDate, today }) => {
         processedEvents.add(eventId);
 
         // 이벤트의 실제 시작/종료 날짜
-        const eventStart = new Date(event.start_at.replace(/\.$/, "").replace(/\./g, "-"));
-        const eventEnd = new Date(event.end_at.replace(/\.$/, "").replace(/\./g, "-"));
+        const eventStart = parseDate(event.start_at);
+        const eventEnd = parseDate(event.end_at);
 
         // 이번 주의 첫날과 마지막날
         const weekStart = week[0].date;
@@ -109,7 +97,8 @@ const WeekRow = ({ week, eventsByDate, today }) => {
   }, [week, eventsByDate]);
 
   // 필요한 총 row 수 계산
-  const maxRow = eventBars.length > 0 ? Math.max(...eventBars.map((b) => b.row)) : -1;
+  const maxRow =
+    eventBars.length > 0 ? Math.max(...eventBars.map((b) => b.row)) : -1;
 
   return (
     <div className="mb-2">
@@ -131,7 +120,7 @@ const WeekRow = ({ week, eventsByDate, today }) => {
               isToday={isToday}
               isSunday={isSunday}
               isSaturday={isSaturday}
-              events={[]} // 이제 이벤트는 아래 바로 표시
+              onClick={onDateClick}
             />
           );
         })}

@@ -18,7 +18,7 @@ const getEventColor = (event) => {
  * @param {Object} event - 이벤트 데이터
  * @param {number} startCol - 시작 컬럼 (0-6, 일요일=0)
  * @param {number} span - 차지하는 컬럼 수
- * @param {number} row - 세로 위치 (같은 날 여러 이벤트가 있을 때 층)
+ * @param {number} row - 세로 위치 (같은 날 여러 이벤트가 있을 때 층)(0~n)
  */
 const EventBar = ({ event, startCol, span, row }) => {
   const bgColor = getEventColor(event);
@@ -29,7 +29,6 @@ const EventBar = ({ event, startCol, span, row }) => {
         gridColumn: `${startCol + 1} / span ${span}`, // CSS Grid column 위치
         gridRow: row + 1, // CSS Grid row 위치 (1-based)
       }}
-      title={event.title} // hover 시 전체 제목 표시
     >
       {event.title}
     </div>
