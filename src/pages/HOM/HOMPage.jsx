@@ -4,38 +4,35 @@ import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import MainCalendar from "../../components/HOM/MainCalendar";
 import TabBar from "../../components/common/TabBar";
-import CalendarCell from "../../components/HOM/CalendarCell";
 import maincalendarMock from "../../mocks/HOM/maincalendarMock.json";
 import { parseDate, formatDateKey } from "../../utils/dateUtil";
 
 const HOMPage = () => {
   const navigate = useNavigate();
 
-  // 1. 이벤트 데이터 상태 관리
-  const [events, setEvents] = useState(maincalendarMock);
+  const [events, setEvents] = useState(maincalendarMock); // 초기에는 mock 데이터 사용
   const [currentDate, setCurrentDate] = useState(() => {
+    // 1. 초기 selectedDate : 오늘 날짜
     const today = new Date();
     return formatDateKey(today);
   });
 
-  // 2. eventsByDate : 일별로 매핑된 배열
+  // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {
     const eventMap = {};
 
     events.articles.forEach((article) => {
       const startDate = parseDate(article.start_at);
       const endDate = parseDate(article.end_at);
-
       if (!startDate || !endDate) return;
-
       // 필요한 데이터만 추출한 경량 객체 생성
       const SingleEvent = {
+        article_id: article.article_id,
         title: article.title,
         category_name: article.categories?.category_name || null,
         start_at: article.start_at,
         end_at: article.end_at,
       };
-
       // start_at부터 end_at까지 모든 날짜에 이벤트 추가
       const current = new Date(startDate);
       while (current <= endDate) {
@@ -44,9 +41,7 @@ const HOMPage = () => {
         if (!eventMap[key]) {
           eventMap[key] = []; // 빈 배열 생성
         }
-
         eventMap[key].push(SingleEvent); // 경량 객체 추가
-
         // 다음 날로 이동
         current.setDate(current.getDate() + 1);
       }

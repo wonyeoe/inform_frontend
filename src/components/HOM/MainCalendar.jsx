@@ -6,16 +6,14 @@ import WeekRow from "./WeekRow";
 const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
-  // 1. currentDate를 "현재 보고 있는 달의 아무 날짜"로 사용 (Date 객체)
   const [currentDate, setCurrentDate] = useState(
-    () => new Date(`${selectedDate}T00:00:00`)
+    // selectedDate 선택한 날짜
+    () => new Date(`${selectedDate}T00:00:00`) // "2025-11-16" → Date 객체
   );
-
   // 2. currentDate 기준으로 year, month(0~11) 뽑기
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth(); // 0 = 1월
-
-  // 3. 오늘 날짜 (고정)
+  // 3. 오늘 날짜 (고정) -- 필수는 아닌것 같기도
   const today = useMemo(() => new Date(), []);
 
   // 3. weeks 계산
@@ -61,7 +59,7 @@ const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
     for (let i = 0; i < cells.length; i += 7) {
       weeksArr.push(cells.slice(i, i + 7));
     }
-
+    console.log("📅 weeks 배열 생성:", weeksArr);
     return weeksArr;
   }, [year, month]); // ⬅️ year/month 바뀔 때마다 재계산
 

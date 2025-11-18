@@ -1,11 +1,9 @@
-const CalendarCell = ({
-  date,
-  inCurrentMonth,
-  isToday,
-  isSunday,
-  isSaturday,
-  onClick,
-}) => {
+const CalendarCell = ({ date, inCurrentMonth, isToday, onClick }) => {
+  // 요일 계산 (0: 일요일, 6: 토요일)
+  const dayOfWeek = date.getDay();
+  const isSunday = dayOfWeek === 0;
+  const isSaturday = dayOfWeek === 6;
+
   // 텍스트 색상 결정
   let textColor = "text-gray-700";
   if (!inCurrentMonth) textColor = "text-gray-300";
@@ -15,7 +13,7 @@ const CalendarCell = ({
   // 날짜 클릭 핸들러 - date를 명시적으로 전달
   const handleClick = () => {
     if (onClick) {
-      onClick(date);  // Date 객체를 전달!
+      onClick(date); // Date 객체를 전달!
     }
   };
 
