@@ -9,7 +9,7 @@ const EVENT_COLORS = {
 
 // 이벤트 카테고리에 따른 색상 반환
 const getEventColor = (event) => {
-  const categoryName = event?.categories?.category_name;
+  const categoryName = event?.category_name;
   return EVENT_COLORS[categoryName] || EVENT_COLORS.default;
 };
 
