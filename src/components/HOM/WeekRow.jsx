@@ -1,115 +1,24 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import CalendarCell from "./CalendarCell";
 import EventBar from "./EventBar";
+import {
+  formatDateKey,
+  isSameDate,
+  parseDate,
+  isDateBefore,
+  isDateAfter,
+  isDateAfterOrEqual,
+  isDateBeforeOrEqual,
+} from "../../utils/dateUtil";
 
-// 날짜를 YYYY-MM-DD 형식으로 변환
-const formatDateKey = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+const WeekRow = ({ week, eventsByDate, today, onSelectDate }) => {
+  const eventBars = useMemo(
+    () => calcEventBarsForWeek(week, eventsByDate),
+    [week, eventsByDate]
+  );
 
-// 두 날짜가 같은 날인지 확인
-const isSameDate = (a, b) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate();
-
-/**
- * WeekRow - 한 주(7일)의 날짜와 이벤트 바들을 렌더링
- * @param {Array} week - 7개의 날짜 객체 배열 [{date, inCurrentMonth}, ...]
- * @param {Object} eventsByDate - 날짜별 이벤트 맵
- * @param {Date} today - 오늘 날짜
- */
-const WeekRow = ({ week, eventsByDate, today }) => {
-  // 이 주에 걸치는 이벤트들을 분석하고 배치 정보 계산
-  const eventBars = useMemo(() => {
-    const bars = [];
-    const processedEvents = new Set(); // 이미 처리한 이벤트 추적
-
-    week.forEach((cellData, colIndex) => {
-      if (!cellData) return;
-
-      const { date } = cellData;
-      const dateKey = formatDateKey(date);
-      const dayEvents = eventsByDate[dateKey] || [];
-
-      dayEvents.forEach((event) => {
-        const eventId = `${event.title}-${event.start_at}`;
-
-        // 이미 처리한 이벤트는 건너뛰기 (이번 주에서 이미 시작된 이벤트)
-        if (processedEvents.has(eventId)) return;
-        processedEvents.add(eventId);
-
-        // 이벤트의 실제 시작/종료 날짜
-        const eventStart = new Date(event.start_at.replace(/\.$/, "").replace(/\./g, "-"));
-        const eventEnd = new Date(event.end_at.replace(/\.$/, "").replace(/\./g, "-"));
-
-        // 이번 주의 첫날과 마지막날
-        const weekStart = week[0].date;
-        const weekEnd = week[6].date;
-
-        // 이번 주에서 이벤트가 차지하는 시작/끝 컬럼 계산
-        let startCol = 0;
-        let endCol = 6;
-
-        // 이벤트 시작일이 이번 주 안에 있으면 해당 요일부터
-        if (eventStart >= weekStart && eventStart <= weekEnd) {
-          startCol = colIndex;
-        }
-
-        // 이벤트 종료일이 이번 주 안에 있으면 해당 요일까지
-        for (let i = 0; i < 7; i++) {
-          if (week[i] && isSameDate(week[i].date, eventEnd)) {
-            endCol = i;
-            break;
-          }
-          if (week[i] && week[i].date > eventEnd) {
-            endCol = i - 1;
-            break;
-          }
-        }
-
-        const span = endCol - startCol + 1;
-
-        bars.push({
-          event,
-          startCol,
-          span,
-          eventId,
-        });
-      });
-    });
-
-    // Row 할당 (겹치는 이벤트 처리)
-    bars.forEach((bar, index) => {
-      let row = 0;
-      const barEnd = bar.startCol + bar.span - 1;
-
-      // 이전 바들과 겹치는지 확인
-      for (let i = 0; i < index; i++) {
-        const prevBar = bars[i];
-        const prevBarEnd = prevBar.startCol + prevBar.span - 1;
-
-        // 겹치는지 확인
-        const overlaps =
-          (bar.startCol >= prevBar.startCol && bar.startCol <= prevBarEnd) ||
-          (prevBar.startCol >= bar.startCol && prevBar.startCol <= barEnd);
-
-        if (overlaps && prevBar.row === row) {
-          row++; // 겹치면 다음 row로
-        }
-      }
-
-      bar.row = row;
-    });
-
-    return bars;
-  }, [week, eventsByDate]);
-
-  // 필요한 총 row 수 계산
-  const maxRow = eventBars.length > 0 ? Math.max(...eventBars.map((b) => b.row)) : -1;
+  const maxRow =
+    eventBars.length > 0 ? Math.max(...eventBars.map((b) => b.row)) : -1;
 
   return (
     <div className="mb-2">
@@ -120,8 +29,6 @@ const WeekRow = ({ week, eventsByDate, today }) => {
 
           const { date, inCurrentMonth } = cellData;
           const isToday = inCurrentMonth && isSameDate(date, today);
-          const isSunday = j === 0;
-          const isSaturday = j === 6;
 
           return (
             <CalendarCell
@@ -129,9 +36,7 @@ const WeekRow = ({ week, eventsByDate, today }) => {
               date={date}
               inCurrentMonth={inCurrentMonth}
               isToday={isToday}
-              isSunday={isSunday}
-              isSaturday={isSaturday}
-              events={[]} // 이제 이벤트는 아래 바로 표시
+              onClick={onSelectDate}
             />
           );
         })}
@@ -161,3 +66,94 @@ const WeekRow = ({ week, eventsByDate, today }) => {
 };
 
 export default WeekRow;
+
+function calcEventBarsForWeek(week, eventsByDate) {
+  const uniqueEvents = collectUniqueEvents(week, eventsByDate); // 중복 제거된 이벤트 수집
+  const bars = buildBars(week, uniqueEvents); // 이벤트 바 생성
+  assignRows(bars); //행 할당
+  return bars;
+}
+
+function collectUniqueEvents(week, eventsByDate) {
+  // 중복 제거된 이벤트 수집
+  const uniqueEvents = new Map();
+
+  week.forEach((cellData) => {
+    if (!cellData) return;
+
+    const dateKey = formatDateKey(cellData.date);
+    const dayEvents = eventsByDate[dateKey] || [];
+
+    dayEvents.forEach((event) => {
+      if (!uniqueEvents.has(event.article_id)) {
+        uniqueEvents.set(event.article_id, event);
+      }
+    });
+  });
+
+  return Array.from(uniqueEvents.values());
+}
+
+function buildBars(week, events) {
+  // 이벤트 바 생성
+  const bars = [];
+  const weekStart = week[0].date; // 주의 시작 날짜 {2025-11-02}
+  const weekEnd = week[6].date; // 주의 끝 날짜 {2025-11-08}
+
+  events.forEach((event) => {
+    const eventStart = parseDate(event.start_at); //Date 객체
+    const eventEnd = parseDate(event.end_at); //Date 객체
+    if (!eventStart || !eventEnd) return;
+
+    if (isDateBefore(eventEnd, weekStart) || isDateAfter(eventStart, weekEnd)) {
+      // 주 밖 이벤트
+      return;
+    }
+
+    let startCol = 0;
+    if (
+      isDateAfterOrEqual(eventStart, weekStart) &&
+      isDateBeforeOrEqual(eventStart, weekEnd)
+    ) {
+      startCol = eventStart.getDay();
+    }
+
+    let endCol = 6;
+    if (
+      isDateAfterOrEqual(eventEnd, weekStart) &&
+      isDateBeforeOrEqual(eventEnd, weekEnd)
+    ) {
+      endCol = eventEnd.getDay();
+    }
+
+    const span = endCol - startCol + 1;
+    if (span > 0) {
+      bars.push({ event, startCol, span });
+    }
+  });
+
+  return bars;
+}
+
+function assignRows(bars) {
+  bars.forEach((bar, index) => {
+    //index는 0부터 시작해서 반복 할 때 마다 1씩 증가
+    let row = 0;
+    const barEnd = bar.startCol + bar.span - 1; //barEnd : 이 주에서 마지막으로 차지하는 칸 번호
+
+    for (let i = 0; i < index; i++) {
+      const prevBar = bars[i];
+      const prevBarEnd = prevBar.startCol + prevBar.span - 1;
+
+      const overlaps = // 겹치는지 확인
+        (bar.startCol >= prevBar.startCol && bar.startCol <= prevBarEnd) ||
+        (prevBar.startCol >= bar.startCol && prevBar.startCol <= barEnd);
+
+      if (overlaps && prevBar.row === row) {
+        //둘이 가로가 겹치는데 row도 같다(같은 행이면)
+        row++; // 아래 줄로 내려주자
+      }
+    }
+    bar.row = row; //겹치는 행이 없는 경우 최종 행 할당
+  });
+}

@@ -1,13 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-/*
-    파일이름이 COM3으로 설정이 안됨,, (못 사용하는 이름인듯)
-
-    COM3 - 상단 탭 네비게이션 모듈
-    탭: 캘린더(/), 게시판(/events), 동아리(/clubs)
- */
-
 const TabBar = () => {
   const tabs = [
     { id: "calendar", label: "캘린더", to: "/" },
