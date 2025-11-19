@@ -1,6 +1,6 @@
 import React from "react";
 
-const EventDetail = ({ title, source, date, content, linkUrl }) => {
+const EventDetail = ({ id, title, source, date, content, linkUrl }) => {
   return (
     <div className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-8">
       {/* 제목 */}
@@ -28,7 +28,7 @@ const EventDetail = ({ title, source, date, content, linkUrl }) => {
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline"
           >
-            실제 공지 페이지 바로가기
+            실제 페이지 바로가기
           </a>
         </div>
       )}
