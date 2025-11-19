@@ -122,7 +122,7 @@ const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
             week={week}
             eventsByDate={eventsByDate}
             today={today}
-            onDateClick={onSelectDate}
+            onSelectDate={onSelectDate}
           />
         ))}
       </div>

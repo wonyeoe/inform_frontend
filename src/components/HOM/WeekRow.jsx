@@ -11,7 +11,7 @@ import {
   isDateBeforeOrEqual,
 } from "../../utils/dateUtil";
 
-const WeekRow = ({ week, eventsByDate, today, onDateClick }) => {
+const WeekRow = ({ week, eventsByDate, today, onSelectDate }) => {
   const eventBars = useMemo(
     () => calcEventBarsForWeek(week, eventsByDate),
     [week, eventsByDate]
@@ -36,7 +36,7 @@ const WeekRow = ({ week, eventsByDate, today, onDateClick }) => {
               date={date}
               inCurrentMonth={inCurrentMonth}
               isToday={isToday}
-              onClick={onDateClick}
+              onClick={onSelectDate}
             />
           );
         })}

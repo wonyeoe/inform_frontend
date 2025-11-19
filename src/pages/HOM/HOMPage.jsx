@@ -6,6 +6,9 @@ import MainCalendar from "../../components/HOM/MainCalendar";
 import TabBar from "../../components/common/TabBar";
 import maincalendarMock from "../../mocks/HOM/maincalendarMock.json";
 import { parseDate, formatDateKey } from "../../utils/dateUtil";
+import DaySelectEvent from "../../components/HOM/DaySelectEvent";
+import DaySelectEventList from "../../components/HOM/DaySelectEventList";
+import SsoLink from "../../components/HOM/SsoLink";
 
 const HOMPage = () => {
   const navigate = useNavigate();
@@ -67,7 +70,9 @@ const HOMPage = () => {
         eventsByDate={eventsByDate}
         onSelectDate={handleDateClick}
       />
+      <DaySelectEventList events={eventsByDate[currentDate]} />
       <Footer />
+      <SsoLink />
     </div>
   );
 };
