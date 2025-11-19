@@ -73,7 +73,7 @@ const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
   };
 
   return (
-    <div className="w-full rounded-4xl bg-white shadow-md p-10">
+    <div className="w-full rounded-4xl bg-white shadow-md p-10 border w-full max-w-3/4 m-8">
       {/* 상단: 월 네비게이션 */}
       <div className="flex items-center justify-between mb-4">
         <button
