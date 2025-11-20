@@ -1,3 +1,5 @@
+import { CATEGORY_COLORS } from "../../constants/tagColors";
+
 const DaySelectEvent = ({ event }) => {
   let category;
   let categoryColor;
@@ -5,23 +7,23 @@ const DaySelectEvent = ({ event }) => {
   switch (event.category_name) {
     case "LECTURE":
       category = "특강";
-      categoryColor = "bg-blue-500 text-white";
+      categoryColor = CATEGORY_COLORS.LECTURE;
       break;
     case "CLUB":
       category = "동아리";
-      categoryColor = "bg-green-500 text-white";
+      categoryColor = CATEGORY_COLORS.CLUB;
       break;
     case "COMPETITION":
       category = "대회";
-      categoryColor = "bg-purple-500 text-white";
+      categoryColor = CATEGORY_COLORS.COMPETITION;
       break;
     case "CONTEST":
       category = "공모전";
-      categoryColor = "bg-orange-500 text-white";
+      categoryColor = CATEGORY_COLORS.CONTEST;
       break;
     default:
       category = "기타";
-      categoryColor = "bg-gray-300 text-black";
+      categoryColor = CATEGORY_COLORS.DEFAULT;
   }
 
   return (

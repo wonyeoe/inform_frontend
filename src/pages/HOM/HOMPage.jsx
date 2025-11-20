@@ -6,9 +6,8 @@ import MainCalendar from "../../components/HOM/MainCalendar";
 import TabBar from "../../components/common/TabBar";
 import maincalendarMock from "../../mocks/HOM/maincalendarMock.json";
 import { parseDate, formatDateKey } from "../../utils/dateUtil";
-import DaySelectEvent from "../../components/HOM/DaySelectEvent";
 import DaySelectEventList from "../../components/HOM/DaySelectEventList";
-import SsoLink from "../../components/HOM/SsoLink";
+import ServiceLinkList from "../../components/common/ServiceLinkList";
 
 const HOMPage = () => {
   const navigate = useNavigate();
@@ -58,21 +57,47 @@ const HOMPage = () => {
   const handleDateClick = (date) => {
     const dateKey = formatDateKey(date); // Date 객체 → "2025-11-16"
     setCurrentDate(dateKey);
-    console.log("📌 날짜 선택됨:", dateKey);
-    console.log("📋 이 날의 이벤트:", eventsByDate[dateKey] || "이벤트 없음");
   };
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <TabBar />
-      <MainCalendar
-        selectedDate={currentDate}
-        eventsByDate={eventsByDate}
-        onSelectDate={handleDateClick}
-      />
-      <DaySelectEventList events={eventsByDate[currentDate]} />
+
+      {/* 배너 이미지 - 중앙 정렬 */}
+      <div className="w-full flex justify-center px-4 mt-6">
+        <img
+          src="/assets/header/headertest.png"
+          alt="HOM 배너"
+          className="w-full max-w-6xl h-40 object-cover rounded-lg"
+        />
+      </div>
+
+      {/* SSO 링크 + 캘린더 - 중앙 정렬 */}
+      <div className="w-full flex justify-center px-4 py-6">
+        <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
+          <div className="flex-shrink-0 lg:w-auto w-full flex justify-center lg:justify-start">
+            <ServiceLinkList />
+          </div>
+          <div className="flex-1 min-w-0">
+            <MainCalendar
+              selectedDate={currentDate}
+              eventsByDate={eventsByDate}
+              onSelectDate={handleDateClick}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 하단: 이벤트 리스트 - 중앙 정렬 */}
+      <div className="w-full flex justify-center px-4">
+        <div className="w-full max-w-6xl">
+          <DaySelectEventList
+            events={eventsByDate[currentDate]}
+            currentDate={currentDate}
+          />
+        </div>
+      </div>
       <Footer />
-      <SsoLink />
     </div>
   );
 };

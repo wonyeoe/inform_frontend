@@ -73,41 +73,41 @@ const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
   };
 
   return (
-    <div className="w-full rounded-4xl bg-white shadow-md p-10 border w-full max-w-3/4 m-8">
+    <div className="w-full rounded-3xl bg-white shadow-md p-6 sm:p-8 md:p-10">
       {/* 상단: 월 네비게이션 */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 md:mb-5">
         <button
           type="button"
           onClick={goPrevMonth}
-          className="p-2 rounded-full hover:bg-gray-100"
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
         >
-          <IoChevronBackOutline className="text-gray-400 text-xl" />
+          <IoChevronBackOutline className="text-gray-500 text-lg sm:text-xl" />
         </button>
 
-        <div className="text-2xl font-semibold text-gray-800">
+        <div className="text-base sm:text-base md:text-lg font-semibold text-gray-800">
           {year}년 {month + 1}월
         </div>
 
         <button
           type="button"
           onClick={goNextMonth}
-          className="p-2 rounded-full hover:bg-gray-100"
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
         >
-          <IoChevronForwardOutline className="text-gray-400 text-xl" />
+          <IoChevronForwardOutline className="text-gray-500 text-lg sm:text-xl" />
         </button>
       </div>
-      <div className="border-b border-gray-200 mb-8" />
+      <div className="border-b border-gray-200 mb-4 md:mb-5" />
       {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 text-center text-sm mb-6">
+      <div className="grid grid-cols-7 text-center text-sm sm:text-base mb-2 md:mb-3">
         {dayLabels.map((label, idx) => (
           <div
             key={label}
             className={
               idx === 0
-                ? "text-red-500"
+                ? "text-red-500 font-medium"
                 : idx === 6
-                  ? "text-blue-500"
-                  : "text-gray-400"
+                  ? "text-blue-500 font-medium"
+                  : "text-gray-400 font-medium"
             }
           >
             {label}
@@ -115,13 +115,14 @@ const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
         ))}
       </div>
 
-      <div>
+      <div className="space-y-0 sm:space-y-1">
         {weeks.map((week, i) => (
           <WeekRow
             key={i}
             week={week}
             eventsByDate={eventsByDate}
             today={today}
+            selectedDate={selectedDate}
             onSelectDate={onSelectDate}
           />
         ))}

@@ -1,18 +1,9 @@
-// 카테고리별 색상 매핑
-const EVENT_COLORS = {
-  CLUB: "bg-red-400", //동아리
-  COMPETITION: "bg-green-400", //대회
-  CONTEST: "bg-purple-400", //공모전
-  LECTURE: "bg-blue-400", // 특강
-  default: "bg-gray-300",
-};
-
+import { CATEGORY_COLORS } from "../../constants/tagColors";
 // 이벤트 카테고리에 따른 색상 반환
 const getEventColor = (event) => {
   const categoryName = event?.category_name;
-  return EVENT_COLORS[categoryName] || EVENT_COLORS.default;
+  return CATEGORY_COLORS[categoryName] || CATEGORY_COLORS.DEFAULT;
 };
-
 /**
  * EventBar - 이벤트를 나타내는 가로 바
  * @param {Object} event - 이벤트 데이터
