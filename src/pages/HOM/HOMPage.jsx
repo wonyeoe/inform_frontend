@@ -8,6 +8,7 @@ import maincalendarMock from "../../mocks/HOM/maincalendarMock.json";
 import { parseDate, formatDateKey } from "../../utils/dateUtil";
 import DaySelectEventList from "../../components/HOM/DaySelectEventList";
 import ServiceLinkList from "../../components/common/ServiceLinkList";
+import ClubCarousel from "../../components/common/ClubCarousel";
 
 const HOMPage = () => {
   const navigate = useNavigate();
@@ -97,6 +98,7 @@ const HOMPage = () => {
           />
         </div>
       </div>
+      <ClubCarousel />
       <Footer />
     </div>
   );
