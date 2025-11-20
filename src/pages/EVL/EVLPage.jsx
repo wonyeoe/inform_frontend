@@ -8,6 +8,8 @@ import MiniCalendar from "../../components/common/MiniCalendar"
 import EventRow from "../../components/EVL/EventRow"
 import mockData from "../../mocks/EVL/EventRowMock.json";
 import SearchBar from "../../components/common/SearchBar";
+import ClubCarousel from "../../components/common/ClubCarousel";
+
 
 const EVLPage = () => {
   const navigate = useNavigate();
@@ -48,6 +50,10 @@ const EVLPage = () => {
     return "진행중";
   };
 
+  const handleRowClick = (id) => {
+    navigate('detail/${id}');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -55,12 +61,10 @@ const EVLPage = () => {
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
         {/* FlexBox로 좌우 배치 */}
         <div className="flex flex-col md:flex-row gap-6 items-start">
-          {/* 왼쪽 사이드바 (캘린더 + 무언가..) */}
+          {/* 왼쪽 사이드바 (캘린더 + 동아리 홍보) */}
           <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">
             <MiniCalendar />
-            <div className="bg-white border rounded-xl p-4 h-40 shadow-sm flex items-center justify-center text-gray-400">
-              무언가 (아마 동아리 홍보)
-            </div>
+            <ClubCarousel />
           </aside>
           <main className="flex-1 w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 min-h-[500px]">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
@@ -101,6 +105,7 @@ const EVLPage = () => {
                     title={event.title}
                     date={event.created_at} 
                     status={getStatus(event.start_date, event.due_date)}
+                    onClick={() => handleRowClick(event.article_id)}
                   />
                 ))
               ) : (

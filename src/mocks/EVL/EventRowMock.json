@@ -74,6 +74,76 @@
       "categories": {
         "category_name": "COMPETITION"
       }
+    },
+    {
+      "article_id": 6,
+      "title": "2025 알고리즘 해커톤 참가자 모집",
+      "start_date": "2025-09-15",
+      "due_date": "2025-10-10",
+      "created_at": "2025-09-01",
+      "updated_at": "2025-09-01",
+      "vendors": {
+        "vendor_name": "SW중심대학사업단"
+      },
+      "categories": {
+        "category_name": "COMPETITION"
+      }
+    },
+    {
+      "article_id": 7,
+      "title": "2025 AI 모델 튜닝 경진대회",
+      "start_date": "2025-11-01",
+      "due_date": "2025-11-30",
+      "created_at": "2025-10-05",
+      "updated_at": "2025-10-05",
+      "vendors": {
+        "vendor_name": "AI연구센터"
+      },
+      "categories": {
+        "category_name": "CONTEST"
+      }
+    },
+    {
+      "article_id": 8,
+      "title": "데이터사이언스 특강: 생성형 AI 활용법",
+      "start_date": "2025-10-03",
+      "due_date": "2025-10-20",
+      "created_at": "2025-09-28",
+      "updated_at": "2025-09-28",
+      "vendors": {
+        "vendor_name": "데이터사이언스대학원"
+      },
+      "categories": {
+        "category_name": "LECTURE"
+      }
+    },
+    {
+      "article_id": 9,
+      "title": "SW취업역량 향상 캠프 사전 OT",
+      "start_date": "2025-12-01",
+      "due_date": "2025-12-05",
+      "created_at": "2025-11-15",
+      "updated_at": "2025-11-15",
+      "vendors": {
+        "vendor_name": "취업진로센터"
+      },
+      "categories": {
+        "category_name": "LECTURE"
+      }
+    },
+    {
+      "article_id": 10,
+      "title": "2025 전국 대학생 IoT 메이커 챌린지",
+      "start_date": "2025-08-20",
+      "due_date": "2025-09-15",
+      "created_at": "2025-08-10",
+      "updated_at": "2025-08-10",
+      "vendors": {
+        "vendor_name": "Makerspace"
+      },
+      "categories": {
+        "category_name": "CONTEST"
+      }
     }
   ]
 }

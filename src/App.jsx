@@ -28,7 +28,7 @@ function App() {
         </Route>
         <Route path="events">
           <Route index element={<EVLPage />} />
-          <Route path="detail" element={<EVDPage />} />
+          <Route path="detail/:id" element={<EVDPage />} />
         </Route>
         <Route path="modules">
           <Route path="tabBar" element={<TabBarPage />} />
