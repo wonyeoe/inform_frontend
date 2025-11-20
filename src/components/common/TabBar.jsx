@@ -3,8 +3,8 @@ import { NavLink } from "react-router-dom";
 
 const TabBar = () => {
   const tabs = [
-    { id: "calendar", label: "캘린더", to: "/" },
-    { id: "board", label: "게시판", to: "/events" },
+    { id: "home", label: "홈", to: "/" },
+    { id: "board", label: "이벤트", to: "/events" },
     { id: "club", label: "동아리", to: "/clubs" },
   ];
 

@@ -1,34 +1,41 @@
 import React from "react";
 
-const EventDetail = ({ id, title, source, date, content, linkUrl }) => {
+const EventDetail = ({ title, vendor, startDate, dueDate, created_at, content, linkUrl }) => {
+  const getStatus = () => {
+    const today = new Date(); 
+    const start = new Date(startDate);
+    const end = new Date(dueDate);
+
+    today.setHours(0,0,0,0); 
+    start.setHours(0,0,0,0); 
+    end.setHours(23,59,59,999);
+
+    if (today < start) return { text: "예정", color: "text-green-600 bg-green-50 border-green-200" };
+    if (today > end) return { text: "마감", color: "text-gray-500 bg-gray-100 border-gray-200" };
+    return { text: "진행중", color: "text-blue-600 bg-blue-50 border-blue-200" };
+  };
+  const status = getStatus();
+
   return (
-    <div className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-8">
-      {/* 제목 */}
-      <h1 className="text-2xl font-semibold text-gray-900 mb-2">{title}</h1>
-
-      {/* 공지 출처 / 날짜 */}
-      <div className="text-sm text-gray-500 mb-4">
-        {source} · {date}
+    <div className="w-full bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="p-6 md:p-8 border-b border-gray-100">
+        <div className="flex items-center gap-2 mb-4">
+          <span className={`px-3 py-1 text-xs font-bold border rounded-full ${status.color}`}>{status.text}</span>
+        </div>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight mb-6">{title}</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl">
+          <div className="flex items-center gap-2"><span className="font-semibold text-gray-800">주관:</span><span>{vendor}</span></div>
+          <div className="hidden sm:block w-px h-3 bg-gray-300" />
+          <div className="flex items-center gap-2"><span className="font-semibold text-gray-800">게시일자:</span><span>{created_at}</span></div>
+        </div>
       </div>
-
-      {/* 얇은 선 */}
-      <div className="border-b border-gray-200 mb-6" />
-
-      {/* 행사 내용 */}
-      <div className="text-sm leading-relaxed text-gray-800 whitespace-pre-line mb-8">
-        {content}
+      <div className="p-6 md:p-8 min-h-[200px]">
+        <div className="prose text-gray-800 whitespace-pre-line leading-relaxed">{content}</div>
       </div>
-
-      {/* 원문 링크 */}
       {linkUrl && (
-        <div className="text-sm">
-          <a
-            href={linkUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            실제 페이지 바로가기
+        <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-center">
+          <a href={linkUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 shadow-sm text-sm font-bold transition-colors">
+            원문 공지 보러가기 →
           </a>
         </div>
       )}

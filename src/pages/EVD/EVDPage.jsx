@@ -1,20 +1,32 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/common/Header"
+import TabBar from "../../components/common/TabBar";
+import Footer from "../../components/common/Footer";
+import EventDetail from "../../components/EVD/EventDetail";
+import mockData from "../../mocks/EVD/EventDetailMock.json";
+
 
 const EVDPage = () => {
   const navigate = useNavigate();
+  const event = mockData;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-200 text-slate-800 p-4">
-      <div className="text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-8">EVD Page</h1>
-        <button
-          onClick={() => navigate("/evl")}
-          className="px-8 py-4 bg-slate-800 text-white font-semibold rounded-lg shadow-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transform hover:scale-105 transition-transform duration-200"
-        >
-          Go to EVL Page
-        </button>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      <TabBar/>
+      <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
+        <EventDetail 
+          title={event.title}
+          vendor={event.vendors.vendor_name}
+          startDate={event.start_date}
+          dueDate={event.due_date}
+          created_at={event.created_at}
+          content={event.content}
+          linkUrl={event.original_url}
+        />
       </div>
+      <Footer />
     </div>
   );
 };
