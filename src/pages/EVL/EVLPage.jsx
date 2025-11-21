@@ -51,7 +51,7 @@ const EVLPage = () => {
   };
 
   const handleRowClick = (id) => {
-    navigate('detail/${id}');
+    navigate(`detail/${id}`);
   };
 
   return (

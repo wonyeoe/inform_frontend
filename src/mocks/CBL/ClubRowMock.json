@@ -8,10 +8,10 @@
 	    {
             "article_id": 1,
             "title" : "GOAT 행사 개최",
-			"start_date" :  "2025-03-10",
-			"due_date" :  "2025-04-10",
-			"created_at" : "2025-03-05",
-			"updated_at" : "2025-03-09",
+			"start_date": "2025-11-10",
+            "due_date": "2025-11-23",
+            "created_at": "2025-11-07",
+            "updated_at": "2025-11-07",
 			"attachment_url" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6-RGUZDkvARXngN8xsHMgWchZUp-LVctY9Q&s",
 		    "vendors" : {
 			    "vendor_name" : "GDGOC"

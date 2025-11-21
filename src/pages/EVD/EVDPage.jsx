@@ -36,7 +36,7 @@ const EVDPage = () => {
     }
   }, [id]);
 
-    if (!event) return <div className="min-h-screen bg-gray-50 pt-20 text-center">로딩중...</div>;
+  if (!event) return <div className="min-h-screen bg-gray-50 pt-20 text-center">로딩중...</div>;
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

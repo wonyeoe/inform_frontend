@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<HOMPage />} />
         <Route path="clubs">
           <Route index element={<CBLPage />} />
-          <Route path="detail" element={<CBDPage />} />
+          <Route path="detail/:id" element={<CBDPage />} />
         </Route>
         <Route path="events">
           <Route index element={<EVLPage />} />
