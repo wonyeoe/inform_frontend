@@ -66,9 +66,9 @@ const HOMPage = () => {
       {/* 배너 이미지 - 중앙 정렬 */}
       <div className="w-full flex justify-center px-4 mt-6">
         <img
-          src="/assets/header/headertest.png"
+          src="/assets/header/header.png"
           alt="HOM 배너"
-          className="w-full max-w-6xl h-40 object-cover rounded-lg"
+          className="w-full max-w-6xl h-auto"
         />
       </div>
 
