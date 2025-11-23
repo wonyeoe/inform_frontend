@@ -21,13 +21,13 @@ const HOMPage = () => {
     queryFn: getMonthlyAll,
   });
 
-  // 🔍 데이터 수신 여부 확인 콘솔
+  // 데이터 수신 여부 확인 콘솔
   useEffect(() => {
     console.log("  - isLoading:", isLoading);
     console.log("  - data 타입:", typeof data);
     console.log(
       "  - data.articles 존재?:",
-      data?.articles ? "✅ 있음" : "❌ 없음"
+      data?.articles ? "있음" : "없음"
     );
   }, [data, isLoading, error]);
 

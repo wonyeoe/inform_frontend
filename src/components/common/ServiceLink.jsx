@@ -2,7 +2,7 @@ const ServiceLink = ({
   icon, // 아이콘
   label, // 아이콘 대신 텍스트로 표시
   size = 42, // 원 크기
-  bgColor = "bg-blue-200", // 원 배경색
+  bgColor = "bg-white", // 원 배경색
   textColor = "text-gray-700", // label 글자색
   href, // 외부링크 (필수)
   content, // 설명 텍스트
