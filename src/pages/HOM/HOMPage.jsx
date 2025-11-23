@@ -63,17 +63,15 @@ const HOMPage = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <TabBar />
-
       {/* 배너 이미지 - 중앙 정렬 */}
       <div className="w-full flex justify-center px-4 mt-6">
         <img
-          src="/assets/header/headertest.png"
+          src="/assets/header/header.png"
           alt="HOM 배너"
-          className="w-full max-w-6xl h-40 object-cover rounded-lg"
+          className="w-full max-w-6xl h-auto"
         />
       </div>
 
-      {/* SSO 링크 + 캘린더 - 중앙 정렬 */}
       <div className="w-full flex justify-center px-4 py-6">
         <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
           <div className="flex-shrink-0 lg:w-auto w-full flex justify-center lg:justify-start">
@@ -89,16 +87,20 @@ const HOMPage = () => {
         </div>
       </div>
 
-      {/* 하단: 이벤트 리스트 - 중앙 정렬 */}
+      {/* 하단: 이벤트 리스트와 캐러셀 - 가로 배치 */}
       <div className="w-full flex justify-center px-4">
-        <div className="w-full max-w-6xl">
-          <DaySelectEventList
-            events={eventsByDate[currentDate]}
-            currentDate={currentDate}
-          />
+        <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
+          <div className="flex-1 min-w-0">
+            <DaySelectEventList
+              events={eventsByDate[currentDate]}
+              currentDate={currentDate}
+            />
+          </div>
+          <div className="flex-shrink-0 lg:w-auto w-full">
+            <ClubCarousel />
+          </div>
         </div>
       </div>
-      <ClubCarousel />
       <Footer />
     </div>
   );

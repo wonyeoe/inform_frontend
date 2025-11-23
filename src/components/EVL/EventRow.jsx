@@ -1,6 +1,6 @@
 import React from "react";
 
-const EventRow = ({ status, title, date, onClick }) => {
+const EventRow = ({ id, status, title, date, onClick }) => {
   const getBadgeColor = (status) => {
     if (status === "진행중") return "text-blue-500 border-blue-300 bg-blue-50";
     if (status === "마감") return "text-gray-500 border-gray-300 bg-gray-50";

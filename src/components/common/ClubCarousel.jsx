@@ -6,39 +6,26 @@ import { useEffect, useState } from "react";
 const ClubCarousel = ({
   images = [ClubImage001, ClubImage002, ClubImage003, ClubImage004],
 }) => {
-  const [index, setIndex] = useState(0);
-  const handlePrev = () => {
-    if (index > 0) {
-      setIndex(index - 1);
-    } else {
-      setIndex(images.length - 1);
-    }
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
-    if (index < images.length - 1) {
-      setIndex(index + 1);
-    } else {
-      setIndex(0);
-    }
-
-    useEffect(() => {
-      setInterval(() => {
-        handleNext();
-      }, 3000);
-    }, []);
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [images.length]);
 
   return (
-    <div className="p-4 max-w-100  rounded-lg  gap-4 mt-6 bg-white shadow-md pt-5">
-      <div>동아리/행사 포스터</div>
-      <button onClick={handlePrev}>이전</button>
+    <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
+      <div className="font-semibold items-center pt-3">동아리/행사 포스터</div>
+
       <img
-        src={images[`${index}`]}
+        src={images[currentIndex]}
         alt="carousel"
-        className="w-full max-w-68"
+        className="w-full max-w-60 min-w-48 py-4 "
       />
-      <button onClick={handleNext}>다음</button>
     </div>
   );
 };

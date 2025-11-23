@@ -30,66 +30,6 @@ const TestPage = () => {
       >
         EVL
       </button>
-      <button
-        onClick={() => navigate("/events/detail")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        EVD
-      </button>
-      <button
-        onClick={() => navigate("/modules/tabBar")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        TabBar
-      </button>
-      <button
-        onClick={() => navigate("/modules/searchBar")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        SearchBar
-      </button>
-      <button
-        onClick={() => navigate("/modules/header")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        Header
-      </button>
-      <button
-        onClick={() => navigate("/modules/miniCalendar")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        MiniCalendar
-      </button>
-      <button
-        onClick={() => navigate("/modules/eventRow")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        EventRow
-      </button>
-      <button
-        onClick={() => navigate("/modules/mainCalendar")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        MainCalendar
-      </button>
-      <button
-        onClick={() => navigate("/modules/eventDetail")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        EventDetail
-      </button>
-      <button
-        onClick={() => navigate("/modules/serviceLink")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        ServiceLink
-      </button>
-      <button
-        onClick={() => navigate("/modules/imminentEvents")}
-        className="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-blue-600"
-      >
-        imminentEvents
-      </button>
     </div>
   );
 };

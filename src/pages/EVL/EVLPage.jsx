@@ -7,13 +7,17 @@ import Footer from "../../components/common/Footer";
 import MiniCalendar from "../../components/common/MiniCalendar"
 import EventRow from "../../components/EVL/EventRow"
 import mockData from "../../mocks/EVL/EventRowMock.json";
+import imminentEventsMockData from "../../mocks/EVL/ImminentEventMock.json"
 import SearchBar from "../../components/common/SearchBar";
 import ClubCarousel from "../../components/common/ClubCarousel";
+import Imminent from "../../components/common/Imminent";
 
 
 const EVLPage = () => {
   const navigate = useNavigate();
   const events = mockData.school_articles;
+  const imminentEvents = imminentEventsMockData.school_articles;
+
 
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [searchText, setSearchText] = useState("");
@@ -51,7 +55,7 @@ const EVLPage = () => {
   };
 
   const handleRowClick = (id) => {
-    navigate('detail/${id}');
+    navigate(`detail/${id}`);
   };
 
   return (
@@ -65,6 +69,21 @@ const EVLPage = () => {
           <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">
             <MiniCalendar />
             <ClubCarousel />
+            <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
+              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                🔥 마감 임박
+              </h3>
+              <div className="space-y-1">
+                {imminentEvents.map((imminentEvent) => (
+                  <Imminent
+                    id={imminentEvent.article_id}
+                    title={imminentEvent.title}
+                    date={imminentEvent.due_date} // 마감일 표시 맞겠지..?
+                    onClick={() => handleRowClick(imminentEvent.article_id)}
+                  />
+                ))}
+              </div>
+            </div>
           </aside>
           <main className="flex-1 w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 min-h-[500px]">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
@@ -101,7 +120,7 @@ const EVLPage = () => {
               {filteredEvents.length > 0 ? (
                 filteredEvents.map((event) => (
                   <EventRow
-                    key={event.article_id}
+                    id={event.article_id}
                     title={event.title}
                     date={event.created_at} 
                     status={getStatus(event.start_date, event.due_date)}
