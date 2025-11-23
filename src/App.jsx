@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CBLPage from "./pages/CBL/CBLPage";
 import EVLPage from "./pages/EVL/EVLPage";
 import EVDPage from "./pages/EVD/EVDPage";
@@ -7,9 +9,11 @@ import HOMPage from "./pages/HOM/HOMPage";
 import TestPage from "./pages/TEST/TestPage";
 import NotFoundPage from "./pages/NOT/NotFoundPage";
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/" element={<HOMPage />} />
         <Route path="clubs">
@@ -23,7 +27,8 @@ function App() {
         <Route path="test" element={<TestPage />} />
         <Route path="" element={<NotFoundPage />} />
       </Routes>
-    </>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
