@@ -1,45 +1,54 @@
 {
+  "page_info": {
+    "current_page": 2,
+    "total_pages": 5,
+    "total_articles": 24
+  },
   "articles": [
     {
-      "article_id": 1,
-      "title": "데이터 기획 공모전",
-      "start_at": "2025-03-10",
-      "end_at": "2025-04-10",
-      "created": "2025-03-05",
-      "updated": "2025-03-09",
+      "article_id": 2,
+      "title": "최현우의 호그와트 입학 자소서 특강",
+      "start_date": "2025-11-01",
+      "due_date": "2025-11-31",
+      "created_at": "2025-10-29",
+      "updated_at": "2025-11-01",
       "vendors": {
-        "vendor_name": "IBAS"
+        "vendor_name": "인하광장",
+        "vendor_type": "SCHOOL"
       },
       "categories": {
-        "category_name": null
+        "category_name": "LECTURE"
       }
     },
+
     {
-      "article_id": 2,
-      "title": "GOAT 참가자 모집",
-      "start_at": "2025-11-01",
-      "end_at": "2025-11-14",
-      "created": "2025-10-29",
-      "updated": "2025-11-01",
+      "article_id": 3,
+      "title": "INHA Next Challenge!",
+      "start_date": "2025-11-10",
+      "due_date": "2025-11-23",
+      "created_at": "2025-11-07",
+      "updated_at": "2025-11-07",
       "vendors": {
-        "vendor_name": "GDGOC"
+        "vendor_name": "소프트웨어중심대학사업단",
+        "vendor_type": "SCHOOL"
       },
       "categories": {
         "category_name": "CLUB"
       }
     },
     {
-      "article_id": 3,
-      "title": "[특강] Physical AI와 미래 (11.12.수. 15:00, 60주년-1401B호)",
-      "start_at": "2025-11-10",
-      "end_at": "2025-11-23",
-      "created": "2025-11-07",
-      "updated": "2025-11-07",
+      "article_id": 1,
+      "title": "GOAT 행사 개최!",
+      "start_date": "2025-11-10",
+      "due_date": "2025-11-23",
+      "created_at": "2025-11-07",
+      "updated_at": "2025-11-07",
       "vendors": {
-        "vendor_name": "소프트웨어중심대학사업단"
+        "vendor_name": "GDGOC",
+        "vendor_type": "CLUB"
       },
       "categories": {
-        "category_name": "LECTURE"
+        "category_name": "CONTEST"
       }
     }
   ]

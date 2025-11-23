@@ -25,16 +25,16 @@ const HOMPage = () => {
     const eventMap = {};
 
     events.articles.forEach((article) => {
-      const startDate = parseDate(article.start_at);
-      const endDate = parseDate(article.end_at);
+      const startDate = parseDate(article.start_date);
+      const endDate = parseDate(article.due_date);
       if (!startDate || !endDate) return;
       // 필요한 데이터만 추출한 경량 객체 생성
       const SingleEvent = {
         article_id: article.article_id,
         title: article.title,
         category_name: article.categories?.category_name || null,
-        start_at: article.start_at,
-        end_at: article.end_at,
+        start_date: article.start_date,
+        due_date: article.due_date,
       };
       // start_at부터 end_at까지 모든 날짜에 이벤트 추가
       const current = new Date(startDate);

@@ -32,7 +32,8 @@ const WeekRow = ({ week, eventsByDate, today, selectedDate, onSelectDate }) => {
 
           const { date, inCurrentMonth } = cellData;
           const isToday = inCurrentMonth && isSameDate(date, today);
-          const isSelected = selectedDateObj && isSameDate(date, selectedDateObj);
+          const isSelected =
+            selectedDateObj && isSameDate(date, selectedDateObj);
 
           return (
             <CalendarCell
@@ -106,8 +107,8 @@ function buildBars(week, events) {
   const weekEnd = week[6].date; // 주의 끝 날짜 {2025-11-08}
 
   events.forEach((event) => {
-    const eventStart = parseDate(event.start_at); //Date 객체
-    const eventEnd = parseDate(event.end_at); //Date 객체
+    const eventStart = parseDate(event.start_date); //Date 객체
+    const eventEnd = parseDate(event.due_date); //Date 객체
     if (!eventStart || !eventEnd) return;
 
     if (isDateBefore(eventEnd, weekStart) || isDateAfter(eventStart, weekEnd)) {
