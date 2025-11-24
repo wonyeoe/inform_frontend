@@ -1,18 +1,21 @@
 // 미니 캘린더와 거의 유사
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import WeekRow from "./WeekRow";
 
 const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
-  const [currentDate, setCurrentDate] = useState(
-    // selectedDate 선택한 날짜
-    () => new Date(`${selectedDate}T00:00:00`) // "2025-11-16" → Date 객체
-  );
-  // 2. currentDate 기준으로 year, month(0~11) 뽑기
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth(); // 0 = 1월
+const MainCalendar = ({
+  currentMonth, // "2025-11" 형식
+  selectedDate,
+  eventsByDate,
+  onSelectDate,
+  onMonthChange,
+}) => {
+  // currentMonth prop으로부터 year, month 추출
+  const [yearStr, monthStr] = currentMonth.split("-");
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10) - 1; // "11" → 10 (0-based)
   // 3. 오늘 날짜 (고정) -- 필수는 아닌것 같기도
   const today = useMemo(() => new Date(), []);
 
@@ -63,13 +66,19 @@ const MainCalendar = ({ selectedDate, eventsByDate, onSelectDate }) => {
     return weeksArr;
   }, [year, month]); // ⬅️ year/month 바뀔 때마다 재계산
 
-  // 4. 이전/다음 달 이동
+  // 4. 이전/다음 달 이동 - 부모에게 알림만
   const goPrevMonth = () => {
-    setCurrentDate(new Date(year, month - 1, 1));
+    const newMonth = month - 1;
+    const newYear = newMonth < 0 ? year - 1 : year;
+    const adjustedMonth = newMonth < 0 ? 11 : newMonth;
+    onMonthChange(newYear, adjustedMonth);
   };
 
   const goNextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, 1));
+    const newMonth = month + 1;
+    const newYear = newMonth > 11 ? year + 1 : year;
+    const adjustedMonth = newMonth > 11 ? 0 : newMonth;
+    onMonthChange(newYear, adjustedMonth);
   };
 
   return (

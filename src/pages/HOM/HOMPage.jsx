@@ -5,7 +5,7 @@ import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import MainCalendar from "../../components/HOM/MainCalendar";
 import TabBar from "../../components/common/TabBar";
-import { parseDate, formatDateKey } from "../../utils/dateUtil";
+import { parseDate, formatDateKey, formatMonthKey } from "../../utils/dateUtil";
 import DaySelectEventList from "../../components/HOM/DaySelectEventList";
 import ServiceLinkList from "../../components/common/ServiceLinkList";
 import ClubCarousel from "../../components/common/ClubCarousel";
@@ -14,32 +14,23 @@ import { getMonthlyAll } from "../../api/getMonthlyAll";
 
 const HOMPage = () => {
   const navigate = useNavigate();
-
-  // React Query로 API 데이터 가져오기
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["monthlyAll"],
-    queryFn: getMonthlyAll,
-  });
-
-  // 데이터 수신 여부 확인 콘솔
-  useEffect(() => {
-    console.log("  - isLoading:", isLoading);
-    console.log("  - data 타입:", typeof data);
-    console.log(
-      "  - data.articles 존재?:",
-      data?.articles ? "있음" : "없음"
-    );
-  }, [data, isLoading, error]);
-
   const [currentDate, setCurrentDate] = useState(() => {
     // 1. 초기 selectedDate : 오늘 날짜
     const today = new Date();
     return formatDateKey(today);
   });
+  const [calendarMonth, setCalendarMonth] = useState(() => {
+    const today = new Date();
+    return formatMonthKey(today); //'YYYY-MM' 형식
+  });
 
+  // React Query로 API 데이터 가져오기
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["monthlyAll", calendarMonth], // calendarMonth가 바뀌면 재요청
+    queryFn: () => getMonthlyAll({ calendarMonth }), // 함수로 래핑
+  });
   // API 데이터가 로드되면 사용, 아니면 빈 배열
   const events = data || { articles: [] };
-  //const [events, setEvent] = useState(mainCalendarMock);
 
   // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {
@@ -79,6 +70,16 @@ const HOMPage = () => {
     setCurrentDate(dateKey);
   };
 
+  // 월 변경 핸들러 - MainCalendar에서 호출
+  const handleMonthChange = (year, month) => {
+    // year: 숫자, month: 0-11
+    const monthKey = `${year}-${String(month + 1).padStart(2, "0")}`; // "2025-10"
+    setCalendarMonth(monthKey);
+
+    // 현재 선택된 날짜도 해당 월의 1일로 변경
+    const newDate = new Date(year, month, 1);
+    setCurrentDate(formatDateKey(newDate));
+  };
   // 로딩 상태 처리
   if (isLoading) {
     return (
@@ -117,9 +118,11 @@ const HOMPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <MainCalendar
+              currentMonth={calendarMonth}
               selectedDate={currentDate}
               eventsByDate={eventsByDate}
               onSelectDate={handleDateClick}
+              onMonthChange={handleMonthChange}
             />
           </div>
         </div>
