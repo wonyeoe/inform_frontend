@@ -71,13 +71,13 @@ const HOMPage = () => {
   };
 
   // 월 변경 핸들러 - MainCalendar에서 호출
-  const handleMonthChange = (year, month) => {
-    // year: 숫자, month: 0-11
-    const monthKey = `${year}-${String(month + 1).padStart(2, "0")}`; // "2025-10"
+  const handleMonthChange = (monthKey) => {
+    // monthKey: "2025-10" 형식
     setCalendarMonth(monthKey);
 
     // 현재 선택된 날짜도 해당 월의 1일로 변경
-    const newDate = new Date(year, month, 1);
+    const [yearStr, monthStr] = monthKey.split("-");
+    const newDate = new Date(parseInt(yearStr), parseInt(monthStr) - 1, 1);
     setCurrentDate(formatDateKey(newDate));
   };
   // 로딩 상태 처리

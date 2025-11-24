@@ -1,5 +1,5 @@
 import instance from "./axios";
-
+//[5] 캘린더 아티클 전체 조회
 export async function getMonthlyAll({ calendarMonth }) {
   console.log("🔵 [API] getMonthlyAll 호출 시작");
   /** request param

@@ -23,19 +23,12 @@ const MainCalendar = ({
   const weeks = useMemo(() => {
     // 이번 달 1일
     const firstDayOfMonth = new Date(year, month, 1);
-
     // 이번 달 1일의 요일 (0:일 ~ 6:토)
     const startWeekday = firstDayOfMonth.getDay();
-
     // 이번 달 마지막 날 (28~31)
     const daysInCurrent = new Date(year, month + 1, 0).getDate();
-
     // 지난달 마지막 날
     const daysInPrev = new Date(year, month, 0).getDate();
-
-    console.log("daysInCurrent:", daysInCurrent);
-    console.log("daysInPrev:", daysInPrev);
-
     const cells = [];
 
     // 1) 앞쪽: 지난달 날짜들 ( 흐릿하게 표시할 칸 )
@@ -62,23 +55,41 @@ const MainCalendar = ({
     for (let i = 0; i < cells.length; i += 7) {
       weeksArr.push(cells.slice(i, i + 7));
     }
-    console.log("📅 weeks 배열 생성:", weeksArr);
+
     return weeksArr;
   }, [year, month]); // ⬅️ year/month 바뀔 때마다 재계산
 
   // 4. 이전/다음 달 이동 - 부모에게 알림만
   const goPrevMonth = () => {
-    const newMonth = month - 1;
-    const newYear = newMonth < 0 ? year - 1 : year;
-    const adjustedMonth = newMonth < 0 ? 11 : newMonth;
-    onMonthChange(newYear, adjustedMonth);
+    let newYear = year;
+    let newMonth = month; // 0-based (0~11)
+
+    if (newMonth === 0) {
+      newYear = year - 1;
+      newMonth = 11;
+    } else {
+      newMonth = month - 1;
+    }
+
+    // "YYYY-MM" 형식으로 바로 전달
+    const monthKey = `${newYear}-${String(newMonth + 1).padStart(2, "0")}`;
+    onMonthChange(monthKey);
   };
 
   const goNextMonth = () => {
-    const newMonth = month + 1;
-    const newYear = newMonth > 11 ? year + 1 : year;
-    const adjustedMonth = newMonth > 11 ? 0 : newMonth;
-    onMonthChange(newYear, adjustedMonth);
+    let newYear = year;
+    let newMonth = month; // 0-based (0~11)
+
+    if (newMonth === 11) {
+      newYear = year + 1;
+      newMonth = 0;
+    } else {
+      newMonth = month + 1;
+    }
+
+    // "YYYY-MM" 형식으로 바로 전달
+    const monthKey = `${newYear}-${String(newMonth + 1).padStart(2, "0")}`;
+    onMonthChange(monthKey);
   };
 
   return (
