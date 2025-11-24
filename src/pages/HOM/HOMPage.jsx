@@ -13,33 +13,13 @@ import mainCalendarMock from "../../mocks/HOM/maincalendarMock.json";
 import { getMonthlyAll } from "../../api/getMonthlyAll";
 
 const HOMPage = () => {
-  const navigate = useNavigate();
-
-  // React Query로 API 데이터 가져오기
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["monthlyAll"],
-    queryFn: getMonthlyAll,
-  });
-
-  // 데이터 수신 여부 확인 콘솔
-  useEffect(() => {
-    console.log("  - isLoading:", isLoading);
-    console.log("  - data 타입:", typeof data);
-    console.log(
-      "  - data.articles 존재?:",
-      data?.articles ? "있음" : "없음"
-    );
-  }, [data, isLoading, error]);
-
   const [currentDate, setCurrentDate] = useState(() => {
     // 1. 초기 selectedDate : 오늘 날짜
     const today = new Date();
     return formatDateKey(today);
   });
 
-  // API 데이터가 로드되면 사용, 아니면 빈 배열
-  const events = data || { articles: [] };
-  //const [events, setEvent] = useState(mainCalendarMock);
+  const [events, setEvent] = useState(mainCalendarMock);
 
   // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {
@@ -78,24 +58,6 @@ const HOMPage = () => {
     const dateKey = formatDateKey(date); // Date 객체 → "2025-11-16"
     setCurrentDate(dateKey);
   };
-
-  // 로딩 상태 처리
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg text-gray-600">로딩 중...</div>
-      </div>
-    );
-  }
-
-  // 에러 상태 처리
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg text-red-600">에러 발생: {error.message}</div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
