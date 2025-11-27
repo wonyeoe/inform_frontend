@@ -11,6 +11,7 @@ const MainCalendar = ({
   eventsByDate,
   onSelectDate,
   onMonthChange,
+  onOverflowClick,
 }) => {
   // currentMonth prop으로부터 year, month 추출
   const [yearStr, monthStr] = currentMonth.split("-");
@@ -56,7 +57,7 @@ const MainCalendar = ({
       weeksArr.push(cells.slice(i, i + 7));
     }
 
-    return weeksArr;
+    return weeksArr; // 2차원 배열 반환
   }, [year, month]); // ⬅️ year/month 바뀔 때마다 재계산
 
   // 4. 이전/다음 달 이동 - 부모에게 알림만
@@ -144,6 +145,7 @@ const MainCalendar = ({
             today={today}
             selectedDate={selectedDate}
             onSelectDate={onSelectDate}
+            onOverflowClick={onOverflowClick}
           />
         ))}
       </div>

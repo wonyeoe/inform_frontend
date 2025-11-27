@@ -5,7 +5,6 @@ const Footer = () => {
         <div className="m-2">인하대학교 GDGoc GOAT project</div>
         <div className="m-2">Team 알리미 Alimi</div>
         <div className="m-2">문의 : 000-0000-0000</div>
-        <div className="m-2">Team 알리미 Alimi</div>
       </div>
     </div>
   );
