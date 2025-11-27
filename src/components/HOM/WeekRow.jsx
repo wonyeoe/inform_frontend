@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import CalendarCell from "./CalendarCell";
 import EventBar from "./EventBar";
+import OverflowButton from "./OverflowButton";
 import {
   formatDateKey,
   isSameDate,
@@ -11,8 +12,15 @@ import {
   isDateBeforeOrEqual,
 } from "../../utils/dateUtil";
 
-const WeekRow = ({ week, eventsByDate, today, selectedDate, onSelectDate }) => {
-  const eventBars = useMemo(
+const WeekRow = ({
+  week,
+  eventsByDate,
+  today,
+  selectedDate,
+  onSelectDate,
+  onOverflowClick,
+}) => {
+  const { eventBars, overflows } = useMemo(
     () => calcEventBarsForWeek(week, eventsByDate),
     [week, eventsByDate]
   );
@@ -56,15 +64,35 @@ const WeekRow = ({ week, eventsByDate, today, selectedDate, onSelectDate }) => {
             gridTemplateRows: `repeat(${maxRow + 1}, minmax(1.5rem, auto))`,
           }}
         >
-          {eventBars.map((bar, idx) => (
+          {eventBars.map((bar) => (
             <EventBar
-              key={idx}
+              key={bar.event.article_id}
               event={bar.event}
               startCol={bar.startCol}
               span={bar.span}
               row={bar.row}
             />
           ))}
+        </div>
+      )}
+
+      {/* Overflow 버튼들 (+n) */}
+      {overflows.length > 0 && (
+        <div className="grid grid-cols-7 gap-x-0 mt-1 px-1">
+          {week.map((cellData, dayIndex) => {
+            const overflow = overflows.find((o) => o.dayIndex === dayIndex);
+            return (
+              <div key={dayIndex} className="flex justify-center">
+                {overflow && (
+                  <OverflowButton
+                    count={overflow.count}
+                    dateKey={overflow.dateKey}
+                    onOverflowClick={onOverflowClick}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -75,20 +103,32 @@ export default WeekRow;
 
 function calcEventBarsForWeek(week, eventsByDate) {
   const uniqueEvents = collectUniqueEvents(week, eventsByDate); // 중복 제거된 이벤트 수집
-  const bars = buildBars(week, uniqueEvents); // 이벤트 바 생성
-  assignRows(bars); //행 할당
-  return bars;
+  const bars = buildBars(week, uniqueEvents); // 이벤트 바 생성 (이미 span 순으로 정렬됨)
+
+  // 각 날짜별로 표시할 이벤트 결정
+  const MAX_VISIBLE_ROWS = 4;
+  const { visibleBars, overflows } = filterByColumnLimit(
+    week,
+    bars,
+    MAX_VISIBLE_ROWS
+  );
+
+  // 표시할 이벤트들에 대해서만 행 할당
+  assignRows(visibleBars);
+
+  return { eventBars: visibleBars, overflows };
 }
 
 function collectUniqueEvents(week, eventsByDate) {
   // 중복 제거된 이벤트 수집
+
   const uniqueEvents = new Map();
 
   week.forEach((cellData) => {
     if (!cellData) return;
 
-    const dateKey = formatDateKey(cellData.date);
-    const dayEvents = eventsByDate[dateKey] || [];
+    const dateKey = formatDateKey(cellData.date); //key: '2025-11-02'
+    const dayEvents = eventsByDate[dateKey] || []; //value: [event1, event2, ...]
 
     dayEvents.forEach((event) => {
       if (!uniqueEvents.has(event.article_id)) {
@@ -97,7 +137,7 @@ function collectUniqueEvents(week, eventsByDate) {
     });
   });
 
-  return Array.from(uniqueEvents.values());
+  return Array.from(uniqueEvents.values()); // 이벤트 객체들의 배열 반환
 }
 
 function buildBars(week, events) {
@@ -133,9 +173,23 @@ function buildBars(week, events) {
     }
 
     const span = endCol - startCol + 1;
+
+    // 이벤트의 전체 기간 계산 (정렬 우선순위용)
+    const totalDuration =
+      Math.ceil((eventEnd - eventStart) / (1000 * 60 * 60 * 24)) + 1;
+
     if (span > 0) {
-      bars.push({ event, startCol, span });
+      bars.push({ event, startCol, span, totalDuration });
     }
+  });
+
+  // span 길이 내림차순 정렬 (긴 이벤트가 위로)
+  // span이 같으면 totalDuration으로 정렬 (전체 기간이 긴 것이 위로)
+  bars.sort((a, b) => {
+    if (b.span !== a.span) {
+      return b.span - a.span;
+    }
+    return b.totalDuration - a.totalDuration;
   });
 
   return bars;
@@ -162,4 +216,52 @@ function assignRows(bars) {
     }
     bar.row = row; //겹치는 행이 없는 경우 최종 행 할당
   });
+}
+
+function filterByColumnLimit(week, bars, maxVisibleRows) {
+  // 각 날짜(column)별로 그 날을 지나가는 이벤트가 몇 개인지 추적
+  const columnCounts = Array(7).fill(0);
+  const visibleBarSet = new Set();
+  const overflowMap = {};
+
+  // bars는 이미 span 내림차순으로 정렬되어 있음
+  // 긴 이벤트부터 처리하면서 각 날짜의 제한을 체크
+  bars.forEach((bar) => {
+    const barEnd = bar.startCol + bar.span - 1;
+    let canShow = true;
+
+    // 이 이벤트가 지나가는 모든 날짜에서 아직 여유가 있는지 확인
+    for (let col = bar.startCol; col <= barEnd; col++) {
+      if (columnCounts[col] >= maxVisibleRows) {
+        canShow = false;
+        break;
+      }
+    }
+
+    if (canShow) {
+      // 표시 가능: 모든 날짜의 카운트 증가
+      visibleBarSet.add(bar);
+      for (let col = bar.startCol; col <= barEnd; col++) {
+        columnCounts[col]++;
+      }
+    } else {
+      // 표시 불가: overflow에 추가 (이벤트가 지나가는 모든 날짜에)
+      for (let col = bar.startCol; col <= barEnd; col++) {
+        if (!overflowMap[col]) {
+          const dateKey = formatDateKey(week[col].date);
+          overflowMap[col] = {
+            dayIndex: col,
+            dateKey,
+            count: 0,
+          };
+        }
+        overflowMap[col].count++;
+      }
+    }
+  });
+
+  return {
+    visibleBars: Array.from(visibleBarSet),
+    overflows: Object.values(overflowMap),
+  };
 }

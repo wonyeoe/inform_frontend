@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Header from "../../components/common/Header";
@@ -14,6 +14,7 @@ import { getMonthlyAll } from "../../api/getMonthlyAll";
 
 const HOMPage = () => {
   const navigate = useNavigate();
+  const eventListRef = useRef(null);
   const [currentDate, setCurrentDate] = useState(() => {
     // 1. 초기 selectedDate : 오늘 날짜
     const today = new Date();
@@ -72,6 +73,20 @@ const HOMPage = () => {
     setCurrentDate(dateKey);
   };
 
+  // Overflow 버튼 클릭 핸들러 (+n 클릭 시)
+  const handleOverflowClick = (dateKey) => {
+    // 1. 날짜 선택
+    setCurrentDate(dateKey);
+
+    // 2. 이벤트 리스트로 스크롤
+    if (eventListRef.current) {
+      eventListRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   // 월 변경 핸들러 - MainCalendar에서 호출
   const handleMonthChange = (monthKey) => {
     // monthKey: "2025-10" 형식
@@ -125,6 +140,7 @@ const HOMPage = () => {
               eventsByDate={eventsByDate}
               onSelectDate={handleDateClick}
               onMonthChange={handleMonthChange}
+              onOverflowClick={handleOverflowClick}
             />
           </div>
         </div>
@@ -135,6 +151,7 @@ const HOMPage = () => {
         <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
           <div className="flex-1 min-w-0">
             <DaySelectEventList
+              ref={eventListRef}
               events={eventsByDate[currentDate]}
               currentDate={currentDate}
             />
