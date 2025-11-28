@@ -25,15 +25,15 @@ const HOMPage = () => {
     return formatMonthKey(today); //'YYYY-MM' 형식
   });
 
-  /** * React Query로 API 데이터 가져오기
+  // React Query로 API 데이터 가져오기
   const { data, isLoading, error } = useQuery({
     queryKey: ["monthlyAll", calendarMonth], // calendarMonth가 바뀌면 재요청
     queryFn: () => getMonthlyAll({ calendarMonth }), // 함수로 래핑
   });
-  */
+
   // API 데이터가 로드되면 사용, 아니면 빈 배열
-  //const events = data || { articles: [] };
-  const events = mainCalendarMock; // Mock 데이터 사용 시
+  const events = data || { articles: [] };
+  //const events = mainCalendarMock; // Mock 데이터 사용 시
 
   // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {
@@ -97,7 +97,7 @@ const HOMPage = () => {
     const newDate = new Date(parseInt(yearStr), parseInt(monthStr) - 1, 1);
     setCurrentDate(formatDateKey(newDate));
   };
-  /**로딩 상태 처리
+  /**로딩 상태 처리*/
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -114,7 +114,7 @@ const HOMPage = () => {
       </div>
     );
   }
-*/
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
