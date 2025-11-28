@@ -126,14 +126,14 @@ const HOMPage = () => {
           className="w-full max-w-6xl h-auto"
         />
       </div>
-      <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">    
+      <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
-            <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">  
-              <ServiceLinkList />
-              <ClubCarousel />
-            </aside>
-            <main className="flex-1 w-full space-y-6">
-              <div className="flex-1 min-w-0">
+          <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">
+            <ServiceLinkList />
+            <ClubCarousel />
+          </aside>
+          <main className="flex-1 w-full space-y-6">
+            <div className="flex-1 min-w-0">
               <MainCalendar
                 currentMonth={calendarMonth}
                 selectedDate={currentDate}
@@ -153,6 +153,7 @@ const HOMPage = () => {
           </main>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
