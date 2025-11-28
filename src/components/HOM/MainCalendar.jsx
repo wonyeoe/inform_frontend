@@ -2,6 +2,7 @@
 import React, { useMemo } from "react";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import WeekRow from "./WeekRow";
+import { generateWeeks } from "../../utils/CalendarUtil";
 
 const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -20,45 +21,8 @@ const MainCalendar = ({
   // 3. 오늘 날짜 (고정) -- 필수는 아닌것 같기도
   const today = useMemo(() => new Date(), []);
 
-  // 3. weeks 계산
-  const weeks = useMemo(() => {
-    // 이번 달 1일
-    const firstDayOfMonth = new Date(year, month, 1);
-    // 이번 달 1일의 요일 (0:일 ~ 6:토)
-    const startWeekday = firstDayOfMonth.getDay();
-    // 이번 달 마지막 날 (28~31)
-    const daysInCurrent = new Date(year, month + 1, 0).getDate();
-    // 지난달 마지막 날
-    const daysInPrev = new Date(year, month, 0).getDate();
-    const cells = [];
-
-    // 1) 앞쪽: 지난달 날짜들 ( 흐릿하게 표시할 칸 )
-    for (let i = startWeekday - 1; i >= 0; i--) {
-      const date = new Date(year, month - 1, daysInPrev - i);
-      cells.push({ date, inCurrentMonth: false });
-    }
-
-    // 2) 이번 달 날짜들
-    for (let d = 1; d <= daysInCurrent; d++) {
-      const date = new Date(year, month, d);
-      cells.push({ date, inCurrentMonth: true });
-    }
-
-    // 3) 뒤쪽: 다음달 날짜들
-    const remaining = 42 - cells.length; // 6주 * 7일 = 42칸 가정
-    for (let d = 1; d <= remaining; d++) {
-      const date = new Date(year, month + 1, d);
-      cells.push({ date, inCurrentMonth: false });
-    }
-
-    // 7개씩 잘라서 주 단위 배열로 변환
-    const weeksArr = [];
-    for (let i = 0; i < cells.length; i += 7) {
-      weeksArr.push(cells.slice(i, i + 7));
-    }
-
-    return weeksArr; // 2차원 배열 반환
-  }, [year, month]); // ⬅️ year/month 바뀔 때마다 재계산
+  // 3. weeks 계산 - CalendarUtil 사용
+  const weeks = useMemo(() => generateWeeks(year, month), [year, month]);
 
   // 4. 이전/다음 달 이동 - 부모에게 알림만
   const goPrevMonth = () => {
@@ -122,7 +86,7 @@ const MainCalendar = ({
       <div className="grid grid-cols-7 text-center text-sm sm:text-base mb-2 md:mb-3">
         {dayLabels.map((label, idx) => (
           <div
-            key={label}
+            key={idx}
             className={
               idx === 0
                 ? "text-red-500 font-medium"
