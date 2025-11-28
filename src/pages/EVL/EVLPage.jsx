@@ -87,7 +87,7 @@ const EVLPage = () => {
             <MiniCalendar />
             <ClubCarousel />
             <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                 🔥 마감 임박
               </h3>
               <div className="space-y-1 w-full">

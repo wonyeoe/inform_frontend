@@ -119,7 +119,6 @@ const HOMPage = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <TabBar />
-      {/* 배너 이미지 - 중앙 정렬 */}
       <div className="w-full flex justify-center px-4 mt-6">
         <img
           src="/assets/header/header.png"
@@ -127,41 +126,33 @@ const HOMPage = () => {
           className="w-full max-w-6xl h-auto"
         />
       </div>
-
-      <div className="w-full flex justify-center px-4 py-6">
-        <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
-          <div className="shrink-0 lg:w-auto w-full flex justify-center lg:justify-start">
-            <ServiceLinkList />
-          </div>
-          <div className="flex-1 min-w-0">
-            <MainCalendar
-              currentMonth={calendarMonth}
-              selectedDate={currentDate}
-              eventsByDate={eventsByDate}
-              onSelectDate={handleDateClick}
-              onMonthChange={handleMonthChange}
-              onOverflowClick={handleOverflowClick}
-            />
-          </div>
+      <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">    
+        <div className="flex flex-col md:flex-row gap-6 items-start">
+            <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">  
+              <ServiceLinkList />
+              <ClubCarousel />
+            </aside>
+            <main className="flex-1 w-full space-y-6">
+              <div className="flex-1 min-w-0">
+              <MainCalendar
+                currentMonth={calendarMonth}
+                selectedDate={currentDate}
+                eventsByDate={eventsByDate}
+                onSelectDate={handleDateClick}
+                onMonthChange={handleMonthChange}
+                onOverflowClick={handleOverflowClick}
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <DaySelectEventList
+                ref={eventListRef}
+                events={eventsByDate[currentDate]}
+                currentDate={currentDate}
+              />
+            </div>
+          </main>
         </div>
       </div>
-
-      {/* 하단: 이벤트 리스트와 캐러셀 - 가로 배치 */}
-      <div className="w-full flex justify-center px-4">
-        <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
-          <div className="flex-1 min-w-0">
-            <DaySelectEventList
-              ref={eventListRef}
-              events={eventsByDate[currentDate]}
-              currentDate={currentDate}
-            />
-          </div>
-          <div className="shrink-0 lg:w-auto w-full">
-            <ClubCarousel />
-          </div>
-        </div>
-      </div>
-      <Footer />
     </div>
   );
 };

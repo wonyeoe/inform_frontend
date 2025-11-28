@@ -8,7 +8,6 @@ const Imminent = ({ id, title, date, onClick }) => {
     >
       <div className="flex items-center justify-between py-3">
         <div className="flex items-center gap-3">
-          {/* 제목 앞에 점이나 아이콘 등을 넣어 강조해도 좋습니다 */}
           <span className="text-gray-800 text-sm truncate max-w-[160px]">
             {title}
           </span>

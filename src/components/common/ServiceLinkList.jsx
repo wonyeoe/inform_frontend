@@ -56,7 +56,7 @@ const ServiceLinkList = () => {
 
   return (
     <div className="flex flex-col flex-wrap gap-4 bg-white shadow-md p-6 max-w-80 rounded-3xl">
-      <div className="text-center font-semibold">주요 SSO</div>
+      <div className="text-center font-semibold">🌐 주요 서비스</div>
       {Links.map((link, index) => (
         <ServiceLink
           key={index}
