@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header"
 import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
-import MiniCalendar from "../../components/common/MiniCalendar"
+import MiniCalendarSet from "../../components/common/MiniCalendarSet"
 import EventRow from "../../components/EVL/EventRow"
 import mockData from "../../mocks/EVL/EventRowMock.json";
 import imminentEventsMockData from "../../mocks/EVL/ImminentEventMock.json"
@@ -84,7 +84,7 @@ const EVLPage = () => {
         <div className="flex flex-col md:flex-row gap-6 items-start">
           {/* 왼쪽 사이드바 */}
           <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">
-            <MiniCalendar />
+            <MiniCalendarSet />
             <ClubCarousel />
             <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
               <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import CalendarCell from "./CalendarCell";
-import EventBar from "./EventBar";
-import OverflowButton from "./OverflowButton";
+import CalendarCell from "../HOM/CalendarCell";
+import EventBar from "../HOM/EventBar";
+import OverflowButton from "../HOM/OverflowButton";
 import {
   collectUniqueEvents,
   buildBars,
@@ -10,13 +10,12 @@ import {
 } from "../../utils/CalendarUtil";
 import { isSameDate, parseDate } from "../../utils/dateUtil";
 
-const WeekRow = ({
+const MiniCalendarWeekRow = ({
   week,
   eventsByDate,
   today,
   selectedDate,
   onSelectDate,
-  onOverflowClick,
 }) => {
   const { eventBars, overflows } = useMemo(
     () => calcEventBarsForWeek(week, eventsByDate),
@@ -49,7 +48,7 @@ const WeekRow = ({
               isToday={isToday}
               isSelected={isSelected}
               onClick={onSelectDate}
-              isMini={false}
+              isMini={true}
             />
           );
         })}
@@ -58,9 +57,9 @@ const WeekRow = ({
       {/* 이벤트 바들 */}
       {eventBars.length > 0 && (
         <div
-          className="grid grid-cols-7 gap-x-0 gap-y-1 mt-1 px-1"
+          className="grid grid-cols-7 gap-x-0 gap-y-1 mt-0.5 px-1"
           style={{
-            gridTemplateRows: `repeat(${maxRow + 1}, minmax(1.5rem, auto))`,
+            gridTemplateRows: `repeat(${maxRow + 1}, minmax(0.5rem, auto))`,
           }}
         >
           {eventBars.map((bar) => (
@@ -70,24 +69,24 @@ const WeekRow = ({
               startCol={bar.startCol}
               span={bar.span}
               row={bar.row}
-              isMini={false}
+              isMini={true}
             />
           ))}
         </div>
       )}
 
-      {/* Overflow 버튼들 (+n) */}
+      {/* Overflow 버튼들 (...) - Mini용 */}
       {overflows.length > 0 && (
-        <div className="grid grid-cols-7 gap-x-0 mt-1 px-1">
+        <div className="grid grid-cols-7 gap-x-0 mt-0.5 px-1">
           {week.map((cellData, dayIndex) => {
             const overflow = overflows.find((o) => o.dayIndex === dayIndex);
             return (
-              <div key={dayIndex} className="flex justify-center">
+              <div key={dayIndex} className="flex justify-center items-start">
                 {overflow && (
                   <OverflowButton
                     count={overflow.count}
                     dateKey={overflow.dateKey}
-                    onOverflowClick={onOverflowClick}
+                    isMini={true}
                   />
                 )}
               </div>
@@ -99,7 +98,7 @@ const WeekRow = ({
   );
 };
 
-export default WeekRow;
+export default MiniCalendarWeekRow;
 
 function calcEventBarsForWeek(week, eventsByDate) {
   const uniqueEvents = collectUniqueEvents(week, eventsByDate); // 중복 제거된 이벤트 수집

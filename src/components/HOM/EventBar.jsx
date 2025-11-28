@@ -11,14 +11,29 @@ const getEventColor = (event) => {
  * @param {number} span - 차지하는 컬럼 수
  * @param {number} row - 세로 위치 (같은 날 여러 이벤트가 있을 때 층)(0~n)
  */
-const EventBar = ({ event, startCol, span, row }) => {
+const EventBar = ({ event, startCol, span, row, isMini = false }) => {
   const bgColor = getEventColor(event);
+
+  if (isMini) {
+    // Mini 캘린더용 - 작은 크기
+    return (
+      <div
+        className={`${bgColor} px-1 h-2 rounded truncate`}
+        style={{
+          gridColumn: `${startCol + 1} / span ${span}`,
+          gridRow: row + 1,
+        }}
+      ></div>
+    );
+  }
+
+  // Main 캘린더용 - 기본 크기
   return (
     <div
       className={`${bgColor} text-white text-xs px-2 py-1 rounded truncate`}
       style={{
-        gridColumn: `${startCol + 1} / span ${span}`, // CSS Grid column 위치
-        gridRow: row + 1, // CSS Grid row 위치 (1-based)
+        gridColumn: `${startCol + 1} / span ${span}`,
+        gridRow: row + 1,
       }}
     >
       {event.title}

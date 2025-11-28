@@ -4,6 +4,7 @@ const CalendarCell = ({
   isToday,
   isSelected,
   onClick,
+  isMini,
 }) => {
   // 요일 계산 (0: 일요일, 6: 토요일)
   const dayOfWeek = date.getDay();
@@ -22,11 +23,21 @@ const CalendarCell = ({
       onClick(date); // Date 객체를 전달!
     }
   };
-
+  let cellStyle = "";
+  let cellTextStyle = "";
+  if (isMini) {
+    //미니 캘린더용
+    cellStyle = "";
+    cellTextStyle = "text-xs";
+  } else {
+    //기본 캘린더용
+    cellStyle = "w-12 h-8 md:w-14 md:h-9";
+    cellTextStyle = "text-xs sm:text-base md:text-base font-medium";
+  }
   return (
     <div className="flex justify-center pt-1 sm:pt-2">
       <div
-        className={`w-12 h-8 md:w-14 md:h-9 flex flex-col items-center justify-center rounded-xl transition-colors
+        className={`${cellStyle} flex flex-col items-center justify-center rounded-xl transition-colors
           ${isToday ? "bg-blue-500 text-white" : isSelected && inCurrentMonth ? "bg-blue-300 text-white" : textColor}
           ${inCurrentMonth ? "cursor-pointer hover:bg-gray-100" : "cursor-default"}
           ${isToday && inCurrentMonth ? "hover:bg-blue-600" : ""}
@@ -34,9 +45,7 @@ const CalendarCell = ({
         `}
         onClick={handleClick}
       >
-        <span className="text-xs sm:text-base md:text-base font-medium">
-          {date.getDate()}
-        </span>
+        <span className={`${cellTextStyle}`}>{date.getDate()}</span>
       </div>
     </div>
   );
