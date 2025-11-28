@@ -9,8 +9,8 @@ import ClubCarousel from "../../components/common/ClubCarousel";
 import ClubRow from "../../components/CBL/ClubRow";
 import mockData from "../../mocks/CBL/ClubRowMock.json";
 import Imminent from "../../components/common/Imminent";
-import imminentClubsMockData from "../../mocks/CBL/ImminentClubMock.json";
-
+//import imminentClubsMockData from "../../mocks/CBL/ImminentClubMock.json";
+import deadlineApi from "../../api/axios";
 const CBLPage = () => {
   const navigate = useNavigate();
 
@@ -21,7 +21,9 @@ const CBLPage = () => {
   const [searchText, setSearchText] = useState("");
 
   const clubs = mockData.club_articles;
-  const imminentClubs = imminentClubsMockData.club_articles;
+  const [imminentEvents, setImminentEvents] = useState([]);
+  const [imminentLoading, setImminentLoading] = useState(false);
+  const [imminentError, setImminentError] = useState(null);
 
   // 동적으로 카테고리 생성
   const categories = useMemo(() => {
@@ -54,6 +56,26 @@ const CBLPage = () => {
     setCurrentPage(1);
   }, [selectedCategory, searchText]);
 
+  useEffect(() => {
+    const fetchImminentEvents = async () => {
+      try {
+        setImminentLoading(true);
+        setImminentError(null);
+
+        const res = await deadlineApi.get("/api/v1/deadline/club_articles");
+
+        setImminentEvents(res.data.club_articles || []);
+      } catch (error) {
+        console.error("마감 임박 행사 불러오기 실패:", error);
+        setImminentError("마감 임박 행사를 불러오지 못했습니다.");
+      } finally {
+        setImminentLoading(false);
+      }
+    };
+
+    fetchImminentEvents();
+  }, []);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentClubs = filteredClubs.slice(indexOfFirstItem, indexOfLastItem);
@@ -80,18 +102,39 @@ const CBLPage = () => {
             <MiniCalendarSet />
             <ClubCarousel />
             <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                 🔥 마감 임박
               </h3>
               <div className="space-y-1 w-full">
-                {imminentClubs.map((imminentClub) => (
-                  <Imminent
-                    key={imminentClub.article_id}
-                    title={imminentClub.title}
-                    date={imminentClub.due_date}
-                    onClick={() => handleClubClick(imminentClub.article_id)}
-                  />
-                ))}
+                {imminentLoading && (
+                  <p className="text-sm text-gray-400 text-center">
+                    불러오는 중...
+                  </p>
+                )}
+                {imminentError && (
+                  <p className="text-sm text-red-400 text-center">
+                    {imminentError}
+                  </p>
+                )}
+                {!imminentLoading &&
+                  !imminentError &&
+                  imminentEvents.map((imminentEvent) => (
+                    <Imminent
+                      key={imminentEvent.article_id}
+                      title={imminentEvent.title}
+                      date={imminentEvent.due_date}
+                      onClick={() =>
+                        handleClubClick(imminentEvent.article_id)
+                      }
+                    />
+                  ))}
+                {!imminentLoading &&
+                  !imminentError &&
+                  imminentEvents.length === 0 && (
+                    <p className="text-sm text-gray-400 text-center">
+                      표시할 마감 임박 행사가 없습니다.
+                    </p>
+                  )}
               </div>
             </div>
           </aside>

@@ -7,16 +7,19 @@ import Footer from "../../components/common/Footer";
 import MiniCalendarSet from "../../components/common/MiniCalendarSet"
 import EventRow from "../../components/EVL/EventRow"
 import mockData from "../../mocks/EVL/EventRowMock.json";
-import imminentEventsMockData from "../../mocks/EVL/ImminentEventMock.json"
+// import imminentEventsMockData from "../../mocks/EVL/ImminentEventMock.json"
 import SearchBar from "../../components/common/SearchBar";
 import ClubCarousel from "../../components/common/ClubCarousel";
 import Imminent from "../../components/common/Imminent";
-
+import deadlineApi from "../../api/axios";
 
 const EVLPage = () => {
   const navigate = useNavigate();
   const events = mockData.school_articles;
-  const imminentEvents = imminentEventsMockData.school_articles;
+
+  const [imminentEvents, setImminentEvents] = useState([]);
+  const [imminentLoading, setImminentLoading] = useState(false);
+  const [imminentError, setImminentError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -45,6 +48,26 @@ const EVLPage = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, searchText]);
+
+  useEffect(() => {
+    const fetchImminentEvents = async () => {
+      try {
+        setImminentLoading(true);
+        setImminentError(null);
+
+        const res = await deadlineApi.get("/api/v1/deadline/school_articles");
+
+        setImminentEvents(res.data.school_articles || []);
+      } catch (error) {
+        console.error("마감 임박 행사 불러오기 실패:", error);
+        setImminentError("마감 임박 행사를 불러오지 못했습니다.");
+      } finally {
+        setImminentLoading(false);
+      }
+    };
+
+    fetchImminentEvents();
+  }, []);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -91,14 +114,35 @@ const EVLPage = () => {
                 🔥 마감 임박
               </h3>
               <div className="space-y-1 w-full">
-                {imminentEvents.map((imminentEvent) => (
-                  <Imminent
-                    key={imminentEvent.article_id}
-                    title={imminentEvent.title}
-                    date={imminentEvent.due_date}
-                    onClick={() => handleRowClick(imminentEvent.article_id)}
-                  />
-                ))}
+                {imminentLoading && (
+                  <p className="text-sm text-gray-400 text-center">
+                    불러오는 중...
+                  </p>
+                )}
+                {imminentError && (
+                  <p className="text-sm text-red-400 text-center">
+                    {imminentError}
+                  </p>
+                )}
+                {!imminentLoading &&
+                  !imminentError &&
+                  imminentEvents.map((imminentEvent) => (
+                    <Imminent
+                      key={imminentEvent.article_id}
+                      title={imminentEvent.title}
+                      date={imminentEvent.due_date}
+                      onClick={() =>
+                        handleRowClick(imminentEvent.article_id)
+                      }
+                    />
+                  ))}
+                {!imminentLoading &&
+                  !imminentError &&
+                  imminentEvents.length === 0 && (
+                    <p className="text-sm text-gray-400 text-center">
+                      표시할 마감 임박 행사가 없습니다.
+                    </p>
+                  )}
               </div>
             </div>
           </aside>
