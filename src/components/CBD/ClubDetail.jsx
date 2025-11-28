@@ -10,9 +10,9 @@ const ClubDetail = ({ title, vendor, startDate, dueDate, created_at, content, li
     start.setHours(0,0,0,0); 
     end.setHours(23,59,59,999);
 
-    if (today < start) return { text: "예정", color: "text-green-600 bg-green-50 border-green-200" };
-    if (today > end) return { text: "마감", color: "text-gray-500 bg-gray-100 border-gray-200" };
-    return { text: "진행중", color: "text-blue-600 bg-blue-50 border-blue-200" };
+    if (today < start) return { text: "예정", color: "text-Upcoming bg-red-50 border-Upcoming" };
+    if (today > end) return { text: "마감", color: "text-Ended bg-gray-100 border-Ended" };
+    return { text: "진행중", color: "text-Ongoing bg-blue-50 border-Ongoing" };
   };
   const status = getStatus();
 

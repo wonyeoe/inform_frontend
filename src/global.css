@@ -1,11 +1,32 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-/*
-* 여기에 색상 확정 시 색상 키워드 정리 
-각 색상으로 통일 작업 진행 
-*/
 @theme {
-  --color-primary: #4168F7; /* 헤더 색상 */
-  --color-secondary: #1de5d4;
-  --radius-primary-button: 5px;
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-primary: #294D7C; /* 핵심 요소 - 파란색 */
+  --color-secondary: #E6E7F5; /* 핵심 요소 배경 - 하늘색 */
+  --color-text-main: #15171A; /* 제목용 - 진한 회색 */
+  --color-text-sub: #727272; /* 본문,배경용 - 중간 회색 */
+  --color-surface: #F5F5F5; /* 구분선,배경 - 연한 회색 */
+  --color-background: #FFFFFF; /* 흰색 */
+
+
+  /* 카테고리 색상 */
+  --color-lectureBlue: #4E6D99;
+  --color-clubGreen: #5F9B73;
+  --color-competitionYellow: #C79E33;
+  --color-contestRed: #B85C5C;
+  --color-defaultGray: #6F7A85;
+
+  /* 상태 색상 */
+  --color-Ongoing: #294D7C;
+  --color-Ended: #616976;
+  --color-Upcoming: #D63232;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

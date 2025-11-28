@@ -2,10 +2,9 @@ import React from "react";
 
 const EventRow = ({ id, status, title, date, onClick }) => {
   const getBadgeColor = (status) => {
-    if (status === "진행중") return "text-blue-500 border-blue-300 bg-blue-50";
-    if (status === "마감") return "text-gray-500 border-gray-300 bg-gray-50";
-    if (status === "예정") return "text-green-500 border-green-300 bg-green-50";
-    return "text-red-500 border-red-300";
+    if (status === "진행중") return "text-Ongoing border-Ongoing bg-blue-50";
+    if (status === "마감") return "text-Ended border-Ended bg-gray-50";
+    if (status === "예정") return "text-Upcoming border-Upcoming bg-red-50";
   };
 
   return (
