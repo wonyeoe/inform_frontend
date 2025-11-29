@@ -126,6 +126,7 @@ const HOMPage = () => {
           className="w-full max-w-6xl h-auto"
         />
       </div>
+
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">

@@ -1,11 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/common/Header"
+import Header from "../../components/common/Header";
 import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
-import MiniCalendarSet from "../../components/common/MiniCalendarSet"
-import EventRow from "../../components/EVL/EventRow"
+import MiniCalendarSet from "../../components/common/MiniCalendarSet";
+import EventRow from "../../components/EVL/EventRow";
 import mockData from "../../mocks/EVL/EventRowMock.json";
 // import imminentEventsMockData from "../../mocks/EVL/ImminentEventMock.json"
 import SearchBar from "../../components/common/SearchBar";
@@ -35,12 +35,13 @@ const EVLPage = () => {
   ];
 
   const filteredEvents = events.filter((event) => {
-    const isCategoryMatch = 
-      selectedCategory === "ALL" || 
+    const isCategoryMatch =
+      selectedCategory === "ALL" ||
       event.categories?.category_name === selectedCategory;
 
-    const isSearchMatch =
-      event.title.toLowerCase().includes(searchText.toLowerCase());
+    const isSearchMatch = event.title
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
 
     return isCategoryMatch && isSearchMatch;
   });
@@ -75,7 +76,6 @@ const EVLPage = () => {
 
   const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
 
-
   const getStatus = (startDate, dueDate) => {
     const today = new Date();
     const start = new Date(startDate);
@@ -84,7 +84,7 @@ const EVLPage = () => {
     today.setHours(0, 0, 0, 0);
     start.setHours(0, 0, 0, 0);
     end.setHours(23, 59, 59, 999);
-    
+
     if (today < start) return "예정";
     if (today > end) return "마감";
     return "진행중";
@@ -131,9 +131,7 @@ const EVLPage = () => {
                       key={imminentEvent.article_id}
                       title={imminentEvent.title}
                       date={imminentEvent.due_date}
-                      onClick={() =>
-                        handleRowClick(imminentEvent.article_id)
-                      }
+                      onClick={() => handleRowClick(imminentEvent.article_id)}
                     />
                   ))}
                 {!imminentLoading &&

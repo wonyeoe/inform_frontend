@@ -27,7 +27,7 @@ const CalendarCell = ({
   let cellTextStyle = "";
   if (isMini) {
     //미니 캘린더용
-    cellStyle = "";
+    cellStyle = "w-8 h-6";
     cellTextStyle = "text-xs";
   } else {
     //기본 캘린더용
@@ -37,7 +37,7 @@ const CalendarCell = ({
   return (
     <div className="flex justify-center pt-1 sm:pt-2">
       <div
-        className={`${cellStyle} flex flex-col items-center justify-center rounded-xl transition-colors
+        className={`${cellStyle} flex flex-col items-center justify-center rounded-lg transition-colors
           ${isToday ? "bg-blue-500 text-white" : isSelected && inCurrentMonth ? "bg-blue-300 text-white" : textColor}
           ${inCurrentMonth ? "cursor-pointer hover:bg-gray-100" : "cursor-default"}
           ${isToday && inCurrentMonth ? "hover:bg-blue-600" : ""}

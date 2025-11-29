@@ -53,47 +53,6 @@ const MiniCalendarWeekRow = ({
           );
         })}
       </div>
-
-      {/* 이벤트 바들 */}
-      {eventBars.length > 0 && (
-        <div
-          className="grid grid-cols-7 gap-x-0 gap-y-1 mt-0.5 px-1"
-          style={{
-            gridTemplateRows: `repeat(${maxRow + 1}, minmax(0.5rem, auto))`,
-          }}
-        >
-          {eventBars.map((bar) => (
-            <EventBar
-              key={bar.event.article_id}
-              event={bar.event}
-              startCol={bar.startCol}
-              span={bar.span}
-              row={bar.row}
-              isMini={true}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Overflow 버튼들 (...) - Mini용 */}
-      {overflows.length > 0 && (
-        <div className="grid grid-cols-7 gap-x-0 mt-0.5 px-1">
-          {week.map((cellData, dayIndex) => {
-            const overflow = overflows.find((o) => o.dayIndex === dayIndex);
-            return (
-              <div key={dayIndex} className="flex justify-center items-start">
-                {overflow && (
-                  <OverflowButton
-                    count={overflow.count}
-                    dateKey={overflow.dateKey}
-                    isMini={true}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 };
