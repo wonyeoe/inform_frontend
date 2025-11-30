@@ -7,10 +7,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="h-16 bg-primary flex items-center justify-between shadow-md p-14">
+    <header className="h-16 bg-primary flex items-center  shadow-md p-14">
       <button
         onClick={() => navigate("/")}
-        className="text-white text-xl font-bold hover:text-blue-100 transition-colors"
+        className="text-white text-3xl font-bold hover:text-blue-100 transition-colors "
       >
         In:Form
       </button>

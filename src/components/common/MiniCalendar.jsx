@@ -66,7 +66,7 @@ const MiniCalendar = ({
           <IoChevronBackOutline className="text-gray-500 text-lg sm:text-xl" />
         </button>
 
-        <div className="text-base text-base font-semibold text-gray-800">
+        <div className="text-base font-semibold text-gray-800">
           {year}년 {month + 1}월
         </div>
 

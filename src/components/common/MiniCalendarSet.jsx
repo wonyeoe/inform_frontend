@@ -2,10 +2,12 @@ import MockData from "../../mocks/HOM/maincalendarMock.json";
 import MiniCalendar from "./MiniCalendar";
 import { parseDate, formatDateKey, formatMonthKey } from "../../utils/dateUtil";
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getMonthlyAll } from "../../api/getMonthlyAll";
+import MiniCalendarEventList from "./MiniCalendarEventList";
 
 const MiniCalendarSet = () => {
-  //const navigate = useNavigate();
-
+  // const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(() => {
     // 1. 초기 selectedDate : 오늘 날짜
     const today = new Date();
@@ -16,15 +18,13 @@ const MiniCalendarSet = () => {
     return formatMonthKey(today); //'YYYY-MM' 형식
   });
 
-  /** * React Query로 API 데이터 가져오기
+  // React Query로 API 데이터 가져오기
   const { data, isLoading, error } = useQuery({
     queryKey: ["monthlyAll", calendarMonth], // calendarMonth가 바뀌면 재요청
     queryFn: () => getMonthlyAll({ calendarMonth }), // 함수로 래핑
   });
-  */
-  // API 데이터가 로드되면 사용, 아니면 빈 배열
-  //const events = data || { articles: [] };
-  const events = MockData; // Mock 데이터 사용 시
+
+  const events = data || { articles: [] };
 
   // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {
@@ -73,7 +73,7 @@ const MiniCalendarSet = () => {
     const newDate = new Date(parseInt(yearStr), parseInt(monthStr) - 1, 1);
     setCurrentDate(formatDateKey(newDate));
   };
-  /**로딩 상태 처리
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -90,15 +90,22 @@ const MiniCalendarSet = () => {
       </div>
     );
   }
-*/
+
   return (
-    <MiniCalendar
-      currentMonth={calendarMonth}
-      selectedDate={currentDate}
-      eventsByDate={eventsByDate}
-      onSelectDate={handleDateClick}
-      onMonthChange={handleMonthChange}
-    />
+    <>
+      <MiniCalendar
+        currentMonth={calendarMonth}
+        selectedDate={currentDate}
+        eventsByDate={eventsByDate}
+        onSelectDate={handleDateClick}
+        onMonthChange={handleMonthChange}
+      />
+      <MiniCalendarEventList
+        events={eventsByDate[currentDate]}
+        currentDate={currentDate}
+        isMini={true}
+      />
+    </>
   );
 };
 
