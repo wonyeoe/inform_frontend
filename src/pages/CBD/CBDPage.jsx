@@ -1,42 +1,67 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../../components/common/Header";
 import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
 import ClubDetail from "../../components/CBD/ClubDetail";
-import CBLMockData from "../../mocks/CBL/ClubRowMock.json"
-import CBDMockData from "../../mocks/CBD/ClubDetailMock.json";
+//import CBLMockData from "../../mocks/CBL/ClubRowMock.json"
+//import CBDMockData from "../../mocks/CBD/ClubDetailMock.json";
+import api from "../../api/axios";
+
 
 const CBDPage = () => {
-  const navigate = useNavigate();
-
   // URL 파라미터에서 id값 가져오기
   const { id } = useParams(); 
   const [club, setClub] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // 일치하는 id 없으면 1번 ID를 강제로 사용 (테스트용!!!! 나중에 바꾸기)
-    const targetId = id ? parseInt(id) : 1;
+    const fetchEventDetail = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    // 전체 리스트에서 ID 일치하는 행사 찾기
-    const foundClub = CBLMockData.club_articles.find(
-      (item) => item.article_id === targetId
-    );
+        const res = await api.get(`/api/v1/club_articles/${id}`);
+        console.log("event detail:", res.data);
 
-    if (foundClub) {
-      // 찾았으면 리스트 정보 +  상세 내용을 합치기
-      setClub({
-        ...CBDMockData, // 기본 틀(content 등)
-        ...foundClub,        // 실제 정보(title, date 등)
-        vendors: foundClub.vendors || CBDMockData.vendors 
-      });
-    } else {
-      setClub(CBDMockData);
+        setClub(res.data);        
+      } catch (err) {
+        console.error("행사 상세 불러오기 실패:", err);
+        setError("행사 상세를 불러오지 못했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchEventDetail();
     }
   }, [id]);
 
-  if (!club) return <div className="min-h-screen bg-gray-50 pt-20 text-center">로딩중...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-20 text-center">
+        로딩중...
+      </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-20 text-center text-red-500">
+        {error}
+      </div>
+    );
+  }
+
+  if (!club) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-20 text-center">
+        행사를 찾을 수 없습니다.
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

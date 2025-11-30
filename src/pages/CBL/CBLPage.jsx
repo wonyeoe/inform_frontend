@@ -82,7 +82,7 @@ const CBLPage = () => {
   const totalPages = Math.ceil(filteredClubs.length / itemsPerPage);
 
   const handleClubClick = (id) => {
-    navigate(`detail/${id}`);
+    navigate(`/clubs/detail/${id}`);
   };
 
   const handlePageChange = (pageNumber) => {

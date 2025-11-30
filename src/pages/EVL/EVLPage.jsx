@@ -91,7 +91,7 @@ const EVLPage = () => {
   };
 
   const handleRowClick = (id) => {
-    navigate(`detail/${id}`);
+    navigate(`/events/detail/${id}`);
   };
 
   const handlePageChange = (pageNumber) => {
