@@ -55,7 +55,7 @@ const MiniCalendar = ({
   };
 
   return (
-    <div className="w-full rounded-3xl bg-white inset-shadow-xs inset-shadow-gray-300 p-4">
+    <div className="w-full cursor-pointer hover:bg-gray-50 transition-colors px-1">
       {/* 상단: 월 네비게이션 */}
       <div className="flex items-center justify-between mb-2">
         <button

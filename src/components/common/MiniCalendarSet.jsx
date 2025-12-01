@@ -101,7 +101,7 @@ const MiniCalendarSet = () => {
   }
 
   return (
-    <div className="rounded-3xl bg-white shadow-sm p-4 shadow-gray-400">
+    <div className="rounded-3xl bg-white shadow-sm p-4">
       <MiniCalendar
         currentMonth={calendarMonth}
         selectedDate={currentDate}

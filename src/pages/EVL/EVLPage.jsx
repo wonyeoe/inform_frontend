@@ -6,23 +6,30 @@ import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
 import MiniCalendarSet from "../../components/common/MiniCalendarSet";
 import EventRow from "../../components/EVL/EventRow";
-import mockData from "../../mocks/EVL/EventRowMock.json";
-// import imminentEventsMockData from "../../mocks/EVL/ImminentEventMock.json"
 import SearchBar from "../../components/common/SearchBar";
 import ClubCarousel from "../../components/common/ClubCarousel";
 import Imminent from "../../components/common/Imminent";
 import deadlineApi from "../../api/axios";
+import api from "../../api/axios";
+
 
 const EVLPage = () => {
   const navigate = useNavigate();
-  const events = mockData.school_articles;
+
+  const [events, setEvents] = useState([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+  const [eventsError, setEventsError] = useState(null);
+  const [pageInfo, setPageInfo] = useState({
+    current_page: 1,
+    total_pages: 1,
+    total_articles: 0,
+  });
 
   const [imminentEvents, setImminentEvents] = useState([]);
   const [imminentLoading, setImminentLoading] = useState(false);
   const [imminentError, setImminentError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
 
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [searchText, setSearchText] = useState("");
@@ -34,17 +41,46 @@ const EVLPage = () => {
     { id: "CONTEST", label: "공모전" },
   ];
 
-  const filteredEvents = events.filter((event) => {
-    const isCategoryMatch =
-      selectedCategory === "ALL" ||
-      event.categories?.category_name === selectedCategory;
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setEventsLoading(true);
+        setEventsError(null);
 
-    const isSearchMatch = event.title
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
+        const res = await api.get("/api/v1/school_articles", {
+          params: {
+            page: currentPage,
+            category: selectedCategory !== "ALL" ? selectedCategory : undefined,
+            search: searchText.trim() !== "" ? searchText.trim() : undefined,
+            size: 20
+          },
+        });
 
-    return isCategoryMatch && isSearchMatch;
-  });
+        console.log("events list:", res.data);
+
+        setEvents(res.data.school_articles || []);
+        if (res.data.page_info) {
+          setPageInfo(res.data.page_info);
+        } else {
+          // page_info가 없을 경우
+          setPageInfo({
+            current_page: currentPage,
+            total_pages: 1,
+            total_articles: res.data.school_articles
+              ? res.data.school_articles.length
+              : 0,
+          });
+        }
+      } catch (error) {
+        console.error("행사 목록 불러오기 실패:", error);
+        setEventsError("행사 목록을 불러오지 못했습니다.");
+      } finally {
+        setEventsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, [currentPage, selectedCategory, searchText]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -70,11 +106,8 @@ const EVLPage = () => {
     fetchImminentEvents();
   }, []);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentEvents = filteredEvents.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+  const currentEvents = events;
+  const totalPages = pageInfo.total_pages || 1;
 
   const getStatus = (startDate, dueDate) => {
     const today = new Date();
@@ -95,8 +128,9 @@ const EVLPage = () => {
   };
 
   const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
-    window.scrollTo(0, 0); // 페이지 넘길 때 스크롤 맨 위로
+    window.scrollTo(0, 0);
   };
 
   return (
