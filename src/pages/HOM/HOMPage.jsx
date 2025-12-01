@@ -114,6 +114,9 @@ const HOMPage = () => {
       </div>
     );
   }
+  const handleArticleClick = (article_id) => {
+    navigate(`/events/detail/${article_id}`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -149,6 +152,7 @@ const HOMPage = () => {
                 ref={eventListRef}
                 events={eventsByDate[currentDate]}
                 currentDate={currentDate}
+                onArticleClick={handleArticleClick}
               />
             </div>
           </main>

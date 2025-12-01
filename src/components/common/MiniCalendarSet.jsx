@@ -5,9 +5,10 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMonthlyAll } from "../../api/getMonthlyAll";
 import MiniCalendarEventList from "./MiniCalendarEventList";
+import { useNavigate } from "react-router-dom";
 
 const MiniCalendarSet = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(() => {
     // 1. 초기 selectedDate : 오늘 날짜
     const today = new Date();
@@ -17,6 +18,10 @@ const MiniCalendarSet = () => {
     const today = new Date();
     return formatMonthKey(today); //'YYYY-MM' 형식
   });
+
+  const handleArticleClick = (article_id) => {
+    navigate(`/events/detail/${article_id}`);
+  };
 
   // React Query로 API 데이터 가져오기
   const { data, isLoading, error } = useQuery({
@@ -92,7 +97,7 @@ const MiniCalendarSet = () => {
   }
 
   return (
-    <>
+    <div className="rounded-3xl bg-white shadow-sm p-4 shadow-gray-400">
       <MiniCalendar
         currentMonth={calendarMonth}
         selectedDate={currentDate}
@@ -104,8 +109,9 @@ const MiniCalendarSet = () => {
         events={eventsByDate[currentDate]}
         currentDate={currentDate}
         isMini={true}
+        onArticleClick={handleArticleClick}
       />
-    </>
+    </div>
   );
 };
 

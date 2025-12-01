@@ -55,7 +55,7 @@ const MiniCalendar = ({
   };
 
   return (
-    <div className="w-full rounded-3xl bg-white shadow-md p-7">
+    <div className="w-full rounded-3xl bg-white inset-shadow-sm inset-shadow-gray-300 p-4">
       {/* 상단: 월 네비게이션 */}
       <div className="flex items-center justify-between mb-2">
         <button

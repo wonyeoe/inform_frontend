@@ -1,9 +1,11 @@
 import { CATEGORY_COLORS } from "../../constants/tagColors";
 
-const DaySelectEvent = ({ event, isMini = false }) => {
+const DaySelectEvent = ({ event, isMini = false, onArticleClick }) => {
   let category;
   let categoryColor;
-
+  const HandleEventClick = () => {
+    onArticleClick(event.article_id);
+  };
   switch (event.category_name) {
     case "LECTURE":
       category = "특강";
@@ -27,21 +29,27 @@ const DaySelectEvent = ({ event, isMini = false }) => {
   }
   if (isMini) {
     return (
-      <div className="flex items-center gap-3 p-2 mb-2 bg-white border border-gray-100 rounded-2xl shadow-xs">
+      <button
+        className="flex items-center gap-3 p-2 mb-2 bg-white border border-gray-100 rounded-2xl shadow-xs"
+        onClick={HandleEventClick}
+      >
         {/* 카테고리 원형 배지 */}
         <div
-          className={`w-6 h-6 rounded-full flex items-center justify-center  ${categoryColor}`}
+          className={`w-2 h-2 rounded-full flex items-center  ${categoryColor}`}
         ></div>
 
         {/* 이벤트 제목 */}
-        <div className="text-[10px] font-normal text-gray-800 truncate ">
+        <div className="text-[10px] font-normal text-gray-800">
           {event.title}
         </div>
-      </div>
+      </button>
     );
   } else {
     return (
-      <div className="flex items-center gap-3 p-4 border-b border-gray-300">
+      <button
+        className="flex items-center gap-3 p-4 border-b border-gray-300"
+        onClick={HandleEventClick}
+      >
         {/* 카테고리 태그 */}
         <div
           className={`w-20 h-8 flex items-center justify-center rounded-md text-sm font-semibold ${categoryColor}`}
@@ -51,7 +59,7 @@ const DaySelectEvent = ({ event, isMini = false }) => {
 
         {/* 이벤트 제목 */}
         <div className="text-base font-medium">{event.title}</div>
-      </div>
+      </button>
     );
   }
 };
