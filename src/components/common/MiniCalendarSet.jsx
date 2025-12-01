@@ -19,8 +19,12 @@ const MiniCalendarSet = () => {
     return formatMonthKey(today); //'YYYY-MM' 형식
   });
 
-  const handleArticleClick = (article_id) => {
-    navigate(`/events/detail/${article_id}`);
+  const handleArticleClick = (article_id, category) => {
+    if (category === "CLUB") {
+      navigate(`/clubs/detail/${article_id}`);
+    } else {
+      navigate(`/events/detail/${article_id}`);
+    }
   };
 
   // React Query로 API 데이터 가져오기
@@ -29,7 +33,7 @@ const MiniCalendarSet = () => {
     queryFn: () => getMonthlyAll({ calendarMonth }), // 함수로 래핑
   });
 
-  const events = data || { articles: [] };
+  const events = useMemo(() => data || { articles: [] }, [data]);
 
   // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {

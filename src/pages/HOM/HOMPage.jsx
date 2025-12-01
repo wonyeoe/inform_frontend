@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Header from "../../components/common/Header";
@@ -9,8 +9,8 @@ import { parseDate, formatDateKey, formatMonthKey } from "../../utils/dateUtil";
 import DaySelectEventList from "../../components/HOM/DaySelectEventList";
 import ServiceLinkList from "../../components/common/ServiceLinkList";
 import ClubCarousel from "../../components/common/ClubCarousel";
-import mainCalendarMock from "../../mocks/HOM/maincalendarMock.json";
 import { getMonthlyAll } from "../../api/getMonthlyAll";
+import ErrorPage from "../NOT/ErrorPage";
 
 const HOMPage = () => {
   const navigate = useNavigate();
@@ -28,13 +28,14 @@ const HOMPage = () => {
   // React Query로 API 데이터 가져오기
   const { data, isLoading, error } = useQuery({
     queryKey: ["monthlyAll", calendarMonth], // calendarMonth가 바뀌면 재요청
-    queryFn: () => getMonthlyAll({ calendarMonth }), // 함수로 래핑
+    queryFn: () => getMonthlyAll({ calendarMonth }),
+    staleTime: 60 * 1000 * 10,
+    gcTime: 60 * 1000 * 20,
+    // 함수로 래핑
   });
 
   // API 데이터가 로드되면 사용, 아니면 빈 배열
   const events = data || { articles: [] };
-  //const events = mainCalendarMock; // Mock 데이터 사용 시
-
   // 2. eventsByDate : 일별로 이벤트 매핑
   const eventsByDate = useMemo(() => {
     const eventMap = {};
@@ -72,7 +73,6 @@ const HOMPage = () => {
     const dateKey = formatDateKey(date); // Date 객체 → "2025-11-16"
     setCurrentDate(dateKey);
   };
-
   // Overflow 버튼 클릭 핸들러 (+n 클릭 시)
   const handleOverflowClick = (dateKey) => {
     // 1. 날짜 선택
@@ -105,17 +105,16 @@ const HOMPage = () => {
       </div>
     );
   }
-
   // 에러 상태 처리
   if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg text-red-600">에러 발생: {error.message}</div>
-      </div>
-    );
+    return <ErrorPage />;
   }
-  const handleArticleClick = (article_id) => {
-    navigate(`/events/detail/${article_id}`);
+  const handleArticleClick = (article_id, category) => {
+    if (category === "CLUB") {
+      navigate(`/clubs/detail/${article_id}`);
+    } else {
+      navigate(`/events/detail/${article_id}`);
+    }
   };
 
   return (

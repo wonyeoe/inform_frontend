@@ -7,7 +7,7 @@ import EVDPage from "./pages/EVD/EVDPage";
 import CBDPage from "./pages/CBD/CBDPage";
 import HOMPage from "./pages/HOM/HOMPage";
 import TestPage from "./pages/TEST/TestPage";
-import NotFoundPage from "./pages/NOT/NotFoundPage";
+import ErrorPage from "./pages/NOT/ErrorPage";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +25,7 @@ function App() {
           <Route path="detail/:id" element={<EVDPage />} />
         </Route>
         <Route path="test" element={<TestPage />} />
-        <Route path="" element={<NotFoundPage />} />
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

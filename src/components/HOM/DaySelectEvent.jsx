@@ -4,7 +4,8 @@ const DaySelectEvent = ({ event, isMini = false, onArticleClick }) => {
   let category;
   let categoryColor;
   const HandleEventClick = () => {
-    onArticleClick(event.article_id);
+    onArticleClick(event.article_id, event.category_name);
+    console.log("eventClicked : ", event.category_name);
   };
   switch (event.category_name) {
     case "LECTURE":

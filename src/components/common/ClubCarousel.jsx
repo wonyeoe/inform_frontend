@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import api from "../../api/axios";
-
 
 const ClubCarousel = () => {
   const [images, setImages] = useState([]); // 포스터 URL 목록
@@ -15,7 +14,7 @@ const ClubCarousel = () => {
         setLoading(true);
         setError(null);
 
-        const res = await api.get("/api/v1/club_articles/random");
+        const res = await api.get("api/v1/club_articles/random");
 
         console.log("club carousel data:", res.data);
 
@@ -24,7 +23,7 @@ const ClubCarousel = () => {
         const posters = articles
           .map((article) => article.attachment_url)
           .filter((url) => url && url.trim() !== "");
-          
+
         setImages(posters);
         setCurrentIndex(0);
       } catch (err) {
@@ -86,7 +85,7 @@ const ClubCarousel = () => {
           alt="동아리 포스터"
           className="w-full h-full object-cover transition-opacity duration-500"
         />
-        
+
         {/* 하단 점 */}
         <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
           {images.map((_, idx) => (

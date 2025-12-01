@@ -108,7 +108,7 @@ const EVLPage = () => {
           {/* 왼쪽 사이드바 */}
           <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">
             <MiniCalendarSet />
-            <ClubCarousel />
+
             <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
               <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                 🔥 마감 임박
