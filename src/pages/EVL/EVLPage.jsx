@@ -9,9 +9,7 @@ import EventRow from "../../components/EVL/EventRow";
 import SearchBar from "../../components/common/SearchBar";
 import ClubCarousel from "../../components/common/ClubCarousel";
 import Imminent from "../../components/common/Imminent";
-import deadlineApi from "../../api/axios";
 import api from "../../api/axios";
-
 
 const EVLPage = () => {
   const navigate = useNavigate();
@@ -92,7 +90,7 @@ const EVLPage = () => {
         setImminentLoading(true);
         setImminentError(null);
 
-        const res = await deadlineApi.get("/api/v1/deadline/school_articles");
+        const res = await api.get("/api/v1/deadline/school_articles");
 
         setImminentEvents(res.data.school_articles || []);
       } catch (error) {

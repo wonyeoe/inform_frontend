@@ -7,12 +7,20 @@ import MiniCalendarSet from "../../components/common/MiniCalendarSet";
 import SearchBar from "../../components/common/SearchBar";
 import ClubCarousel from "../../components/common/ClubCarousel";
 import ClubRow from "../../components/CBL/ClubRow";
-import mockData from "../../mocks/CBL/ClubRowMock.json";
 import Imminent from "../../components/common/Imminent";
-//import imminentClubsMockData from "../../mocks/CBL/ImminentClubMock.json";
-import deadlineApi from "../../api/axios";
+import api from "../../api/axios";
+
 const CBLPage = () => {
   const navigate = useNavigate();
+
+  const [clubs, setClubs] = useState([]);
+  const [clubsLoading, setClubsLoading] = useState(false);
+  const [clubsError, setClubsError] = useState(null);
+  const [pageInfo, setPageInfo] = useState({
+    current_page: 1,
+    total_pages: 1,
+    total_articles: 0,
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -20,11 +28,54 @@ const CBLPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [searchText, setSearchText] = useState("");
 
-  const clubs = mockData.club_articles;
   const [imminentEvents, setImminentEvents] = useState([]);
   const [imminentLoading, setImminentLoading] = useState(false);
   const [imminentError, setImminentError] = useState(null);
 
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        setClubsLoading(true);
+        setClubsError(null);
+
+        const res = await api.get("/api/v1/club_articles", {
+          params: {
+            page: currentPage,
+            size: itemsPerPage,
+            search: searchText.trim() !== "" ? searchText.trim() : undefined,
+          },
+        });
+
+        console.log("club list:", res.data);
+
+        setClubs(res.data.club_articles || []);
+        if (res.data.page_info) {
+          setPageInfo(res.data.page_info);
+        } else {
+          setPageInfo({
+            current_page: currentPage,
+            total_pages: 1,
+            total_articles: res.data.club_articles
+              ? res.data.club_articles.length
+              : 0,
+          });
+        }
+      } catch (error) {
+        console.error("동아리 목록 불러오기 실패:", error);
+        setClubsError("동아리 목록을 불러오지 못했습니다.");
+      } finally {
+        setClubsLoading(false);
+      }
+    };
+
+    fetchClubs();
+  }, [currentPage, searchText]); 
+
+  // 카테고리/검색 바꾸면 1페이지로
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchText]);
+  
   // 동적으로 카테고리 생성
   const categories = useMemo(() => {
     const allVendors = clubs
@@ -45,11 +96,7 @@ const CBLPage = () => {
       selectedCategory === "ALL" ||
       club.vendors?.vendor_name === selectedCategory;
 
-    const isSearchMatch = club.title
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-
-    return isCategoryMatch && isSearchMatch;
+    return isCategoryMatch;
   });
 
   useEffect(() => {
@@ -62,7 +109,7 @@ const CBLPage = () => {
         setImminentLoading(true);
         setImminentError(null);
 
-        const res = await deadlineApi.get("/api/v1/deadline/club_articles");
+        const res = await api.get("/api/v1/deadline/club_articles");
 
         setImminentEvents(res.data.club_articles || []);
       } catch (error) {
@@ -76,16 +123,15 @@ const CBLPage = () => {
     fetchImminentEvents();
   }, []);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentClubs = filteredClubs.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredClubs.length / itemsPerPage);
+  const currentClubs = filteredClubs;
+  const totalPages = pageInfo.total_pages || 1;
 
   const handleClubClick = (id) => {
     navigate(`/clubs/detail/${id}`);
   };
 
   const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
     window.scrollTo(0, 0);
   };
