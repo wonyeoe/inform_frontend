@@ -48,7 +48,7 @@ const DaySelectEvent = ({ event, isMini = false, onArticleClick }) => {
   } else {
     return (
       <button
-        className="flex items-center gap-3 p-4 border-b border-gray-300"
+        className="flex items-center gap-3 p-4 border-b border-gray-300 w-full hover:bg-gray-100 hover:rounded-xl transition duration-300 cursor-pointer"
         onClick={HandleEventClick}
       >
         {/* 카테고리 태그 */}
