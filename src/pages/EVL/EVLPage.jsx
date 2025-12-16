@@ -7,7 +7,6 @@ import Footer from "../../components/common/Footer";
 import MiniCalendarSet from "../../components/common/MiniCalendarSet";
 import EventRow from "../../components/EVL/EventRow";
 import SearchBar from "../../components/common/SearchBar";
-import ClubCarousel from "../../components/common/ClubCarousel";
 import Imminent from "../../components/common/Imminent";
 import api from "../../api/axios";
 
