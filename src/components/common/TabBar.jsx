@@ -9,15 +9,12 @@ const TabBar = () => {
   ];
 
   return (
-    <nav className="w-full bg-white">
+    <nav className="w-full bg-white shadow-sm">
       {" "}
-      {/* 전체 배경색 */}
       <div className="flex justify-center">
         {" "}
-        {/* 가운데 정렬 */}
         <div className="flex gap-20">
           {" "}
-          {/* 탭 간 간격 */}
           {tabs.map(
             (
               tab // 탭 렌더링
