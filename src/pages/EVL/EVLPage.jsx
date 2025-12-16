@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header";
 import TabBar from "../../components/common/TabBar";
@@ -121,6 +121,22 @@ const EVLPage = () => {
     return "진행중";
   };
 
+  const sortedEvents = useMemo(() => {
+    if (!events) return [];
+    
+    return [...events].sort((a, b) => {
+      const statusA = getStatus(a.start_date, a.due_date);
+      const statusB = getStatus(b.start_date, b.due_date);
+
+      const score = (status) => {
+        if (status === "진행중") return 3;
+        if (status === "예정") return 2;
+        return 1;
+      };
+      return score(statusB) - score(statusA);
+    });
+  }, [events]);
+
   const handleRowClick = (id) => {
     navigate(`/events/detail/${id}`);
   };
@@ -140,7 +156,6 @@ const EVLPage = () => {
           {/* 왼쪽 사이드바 */}
           <aside className="w-full md:w-1/3 lg:w-1/4 space-y-6">
             <MiniCalendarSet />
-
             <div className="p-4 max-w-100 rounded-3xl bg-white shadow-md flex flex-col items-center">
               <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                 🔥 마감 임박
@@ -213,8 +228,8 @@ const EVLPage = () => {
 
               {/* 리스트 출력 */}
               <div className="space-y-1">
-                {currentEvents.length > 0 ? (
-                  currentEvents.map((event) => (
+                {sortedEvents.length > 0 ? (
+                  sortedEvents.map((event) => (
                     <EventRow
                       key={event.article_id}
                       title={event.title}
