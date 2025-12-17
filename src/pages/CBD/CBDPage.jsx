@@ -8,10 +8,9 @@ import ClubDetail from "../../components/CBD/ClubDetail";
 //import CBDMockData from "../../mocks/CBD/ClubDetailMock.json";
 import api from "../../api/axios";
 
-
 const CBDPage = () => {
   // URL 파라미터에서 id값 가져오기
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [club, setClub] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -25,7 +24,7 @@ const CBDPage = () => {
         const res = await api.get(`/api/v1/club_articles/${id}`);
         console.log("event detail:", res.data);
 
-        setClub(res.data);        
+        setClub(res.data);
       } catch (err) {
         console.error("행사 상세 불러오기 실패:", err);
         setError("행사 상세를 불러오지 못했습니다.");
@@ -41,9 +40,7 @@ const CBDPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 text-center">
-        로딩중...
-      </div>
+      <div className="min-h-screen bg-gray-50 pt-20 text-center">로딩중...</div>
     );
   }
 
@@ -62,13 +59,12 @@ const CBDPage = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
-      <TabBar/>
+      <TabBar />
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
-        <ClubDetail 
+        <ClubDetail
           title={club.title}
           vendor={club.vendors.vendor_name}
           startDate={club.start_date}

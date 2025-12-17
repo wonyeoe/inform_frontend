@@ -6,9 +6,8 @@ import Footer from "../../components/common/Footer";
 import EventDetail from "../../components/EVD/EventDetail";
 import api from "../../api/axios";
 
-
 const EVDPage = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,7 +21,7 @@ const EVDPage = () => {
         const res = await api.get(`/api/v1/school_articles/${id}`);
         console.log("event detail:", res.data);
 
-        setEvent(res.data);        
+        setEvent(res.data);
       } catch (err) {
         console.error("행사 상세 불러오기 실패:", err);
         setError("행사 상세를 불러오지 못했습니다.");
@@ -38,9 +37,7 @@ const EVDPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 text-center">
-        로딩중...
-      </div>
+      <div className="min-h-screen bg-gray-50 pt-20 text-center">로딩중...</div>
     );
   }
 
@@ -62,10 +59,9 @@ const EVDPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
-      <TabBar/>
+      <TabBar />
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
-        <EventDetail 
+        <EventDetail
           title={event.title}
           vendor={event.vendors.vendor_name}
           startDate={event.start_date}

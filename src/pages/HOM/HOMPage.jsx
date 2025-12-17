@@ -119,7 +119,6 @@ const HOMPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
       <TabBar />
       <div className="w-full flex justify-center px-4 mt-6">
         <img

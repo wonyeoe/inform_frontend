@@ -49,7 +49,7 @@ const EVLPage = () => {
             page: currentPage,
             category: selectedCategory !== "ALL" ? selectedCategory : undefined,
             search: searchText.trim() !== "" ? searchText.trim() : undefined,
-            size: 20
+            size: 20,
           },
         });
 
@@ -122,7 +122,7 @@ const EVLPage = () => {
 
   const sortedEvents = useMemo(() => {
     if (!events) return [];
-    
+
     return [...events].sort((a, b) => {
       const statusA = getStatus(a.start_date, a.due_date);
       const statusB = getStatus(b.start_date, b.due_date);
@@ -148,7 +148,6 @@ const EVLPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
       <TabBar />
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">

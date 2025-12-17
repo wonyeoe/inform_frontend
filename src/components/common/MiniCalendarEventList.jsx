@@ -16,7 +16,7 @@ const MiniCalendarEventList = ({
     calEventListStyle = "font-semibold mb-4 text-base sm:text-lg md:text-xl";
   }
   return (
-    <div className="w-full cursor-pointer hover:bg-gray-50 transition-colors px-1">
+    <div className="w-full cursor-pointer  px-1">
       <div className={`text-center text-gray-800 ${calEventListStyle} `}>
         {/* {`${year}년 ${month}월 ${day}일`} */}
       </div>

@@ -69,13 +69,13 @@ const CBLPage = () => {
     };
 
     fetchClubs();
-  }, [currentPage, searchText]); 
+  }, [currentPage, searchText]);
 
   // 카테고리/검색 바꾸면 1페이지로
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, searchText]);
-  
+
   // 동적으로 카테고리 생성
   const categories = useMemo(() => {
     const allVendors = clubs
@@ -138,7 +138,6 @@ const CBLPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
       <TabBar />
 
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
@@ -168,9 +167,7 @@ const CBLPage = () => {
                       key={imminentEvent.article_id}
                       title={imminentEvent.title}
                       date={imminentEvent.due_date}
-                      onClick={() =>
-                        handleClubClick(imminentEvent.article_id)
-                      }
+                      onClick={() => handleClubClick(imminentEvent.article_id)}
                     />
                   ))}
                 {!imminentLoading &&

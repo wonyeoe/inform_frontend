@@ -55,7 +55,7 @@ const MiniCalendar = ({
   };
 
   return (
-    <div className="w-full cursor-pointer hover:bg-gray-50 transition-colors px-1">
+    <div className="w-full cursor-pointer  transition-colors px-1">
       {/* 상단: 월 네비게이션 */}
       <div className="flex items-center justify-between mb-2">
         <button
@@ -73,7 +73,7 @@ const MiniCalendar = ({
         <button
           type="button"
           onClick={goNextMonth}
-          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-full transition-colors"
         >
           <IoChevronForwardOutline className="text-gray-500 text-lg sm:text-xl" />
         </button>
