@@ -1,7 +1,5 @@
-import React from "react";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/common/Header";
 import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
 import MiniCalendarSet from "../../components/common/MiniCalendarSet";

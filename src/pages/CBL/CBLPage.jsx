@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/common/Header";
 import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
 import MiniCalendarSet from "../../components/common/MiniCalendarSet";
@@ -183,7 +182,7 @@ const CBLPage = () => {
           </aside>
 
           {/* 오른쪽 메인 컨텐츠 */}
-          <main className="flex-1 w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 min-h-[500px] flex flex-col justify-between">
+          <main className="flex-1 w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 min-h-[500px] flex flex-col justify-between">
             <div>
               {/* 헤더 & 검색창 */}
               <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">

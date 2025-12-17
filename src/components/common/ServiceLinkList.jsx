@@ -1,5 +1,4 @@
 import ServiceLink from "./ServiceLink";
-
 import chatGPT from "../../assets/SSO/chatGPT.png";
 import DBpia from "../../assets/SSO/DBpia.png";
 import everytime from "../../assets/SSO/everytime.png";

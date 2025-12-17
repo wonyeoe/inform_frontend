@@ -31,7 +31,7 @@ const DaySelectEvent = ({ event, isMini = false, onArticleClick }) => {
   if (isMini) {
     return (
       <button
-        className="flex items-center gap-3 p-2 mb-2 bg-white border border-gray-100 rounded-2xl shadow-xs"
+        className="flex items-center gap-3 w-full p-2 mb-2 bg-white border border-gray-100 rounded-2xl shadow-xs hover:bg-gray-50 hover:rounded-xl transition duration-300 cursor-pointer"
         onClick={HandleEventClick}
       >
         {/* 카테고리 원형 배지 */}

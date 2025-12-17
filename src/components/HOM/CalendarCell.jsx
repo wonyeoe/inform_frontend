@@ -20,7 +20,7 @@ const CalendarCell = ({
   // 날짜 클릭 핸들러 - date를 명시적으로 전달
   const handleClick = () => {
     if (onClick && inCurrentMonth) {
-      onClick(date); // Date 객체를 전달!
+      onClick(date); // Date 객체를 전달
     }
   };
   let cellStyle = "";
@@ -31,7 +31,7 @@ const CalendarCell = ({
     cellTextStyle = "text-xs";
   } else {
     //기본 캘린더용
-    cellStyle = "w-12 h-8 md:w-14 md:h-9";
+    cellStyle = "w-12 h-8 md:w-14 md:h-9 ";
     cellTextStyle = "text-xs sm:text-base md:text-base font-medium";
   }
   return (
@@ -41,7 +41,7 @@ const CalendarCell = ({
           ${isToday ? "bg-blue-500 text-white" : isSelected && inCurrentMonth ? "bg-blue-300 text-white" : textColor}
           ${inCurrentMonth ? "cursor-pointer hover:bg-gray-100" : "cursor-default"}
           ${isToday && inCurrentMonth ? "hover:bg-blue-600" : ""}
-          ${isSelected && !isToday && inCurrentMonth ? "hover:bg-blue-400" : ""}
+          ${isSelected && !isToday && inCurrentMonth ? "hover:bg-blue-400 " : ""}
         `}
         onClick={handleClick}
       >

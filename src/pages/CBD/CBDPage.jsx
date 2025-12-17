@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../../components/common/Header";
 import TabBar from "../../components/common/TabBar";
 import Footer from "../../components/common/Footer";
 import ClubDetail from "../../components/CBD/ClubDetail";
