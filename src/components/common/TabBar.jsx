@@ -11,15 +11,13 @@ const TabBar = () => {
   return (
     <div>
       <nav className="w-full pt-6 max-w-6xl mx-auto px-4">
-        {" "}
         <div className="flex justify-items-start">
-          {" "}
           <div className="flex gap-20">
-            {" "}
-            {tabs.map(
-              (
-                tab // 탭 렌더링
-              ) => (
+            {tabs.map((tab) => {
+              // 탭 라벨 길이에 따라 밑줄 너비 결정
+              const underlineWidth = tab.label.length === 3 ? "w-16" : "w-8";
+
+              return (
                 <NavLink key={tab.id} to={tab.to}>
                   {(
                     { isActive } // isActive가 true(현재 페이지)인지 false(다른 페이지)인지 확인
@@ -33,15 +31,15 @@ const TabBar = () => {
                         {tab.label}
                       </span>
                       <span
-                        className={`mt-1 h-0.5 w-10 rounded-full transition duration-300 ${
+                        className={`mt-1 h-0.5 ${underlineWidth} rounded-full transition duration-300 ${
                           isActive ? "bg-gray-400" : "bg-transparent" // 현재 탭이면 연하게 밑줄
                         }`}
                       />
                     </div>
                   )}
                 </NavLink>
-              )
-            )}
+              );
+            })}
           </div>
         </div>
       </nav>

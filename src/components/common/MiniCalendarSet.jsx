@@ -1,4 +1,3 @@
-import MockData from "../../mocks/HOM/maincalendarMock.json";
 import MiniCalendar from "./MiniCalendar";
 import { parseDate, formatDateKey, formatMonthKey } from "../../utils/dateUtil";
 import { useState, useMemo } from "react";
