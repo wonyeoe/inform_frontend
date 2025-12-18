@@ -12,95 +12,83 @@ import api from "../../api/axios";
 const CBLPage = () => {
   const navigate = useNavigate();
 
-  const [clubs, setClubs] = useState([]);
+  const [allClubs, setAllClubs] = useState([]); 
   const [clubsLoading, setClubsLoading] = useState(false);
-  const [clubsError, setClubsError] = useState(null);
-  const [pageInfo, setPageInfo] = useState({
-    current_page: 1,
-    total_pages: 1,
-    total_articles: 0,
-  });
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [searchText, setSearchText] = useState("");
 
-  const [imminentEvents, setImminentEvents] = useState([]);
-  const [imminentLoading, setImminentLoading] = useState(false);
-  const [imminentError, setImminentError] = useState(null);
-
+  
   useEffect(() => {
-    const fetchClubs = async () => {
+    const fetchAllData = async () => {
       try {
         setClubsLoading(true);
-        setClubsError(null);
-
-        const res = await api.get("/api/v1/club_articles", {
-          params: {
-            page: currentPage,
-            size: itemsPerPage,
-            search: searchText.trim() !== "" ? searchText.trim() : undefined,
-          },
+        
+        // size를 크게 잡아서 전체 목록 가져오기
+        const res = await api.get("/api/v1/club_articles", { 
+          params: { page: 1, size: 500 } 
         });
+        
+        setAllClubs(res.data.club_articles || []);
 
-        console.log("club list:", res.data);
+        const resImminent = await api.get("/api/v1/deadline/club_articles");
+        setImminentEvents(resImminent.data.club_articles || []);
 
-        setClubs(res.data.club_articles || []);
-        if (res.data.page_info) {
-          setPageInfo(res.data.page_info);
-        } else {
-          setPageInfo({
-            current_page: currentPage,
-            total_pages: 1,
-            total_articles: res.data.club_articles
-              ? res.data.club_articles.length
-              : 0,
-          });
-        }
       } catch (error) {
-        console.error("동아리 목록 불러오기 실패:", error);
-        setClubsError("동아리 목록을 불러오지 못했습니다.");
+        console.error("데이터 로딩 실패:", error);
       } finally {
         setClubsLoading(false);
       }
     };
+    fetchAllData();
+  }, []);
 
-    fetchClubs();
-  }, [currentPage, searchText]);
-
-  // 카테고리/검색 바꾸면 1페이지로
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, searchText]);
-
-  // 동적으로 카테고리 생성
+  // 동적 카테고리 생성
   const categories = useMemo(() => {
-    const allVendors = clubs
-      .map((club) => club.vendors?.vendor_name)
-      .filter(Boolean);
+    const allVendors = allClubs.map(club => club.vendors?.vendor_name).filter(Boolean);
     const uniqueVendors = [...new Set(allVendors)];
+    
     return [
       { id: "ALL", label: "전체" },
-      ...uniqueVendors.map((vendor) => ({
-        id: vendor,
-        label: vendor,
-      })),
+      ...uniqueVendors.map(vendor => ({ id: vendor, label: vendor }))
     ];
-  }, [clubs]);
+  }, [allClubs]);
 
-  const filteredClubs = clubs.filter((club) => {
-    const isCategoryMatch =
-      selectedCategory === "ALL" ||
-      club.vendors?.vendor_name === selectedCategory;
+  const filteredClubs = useMemo(() => {
+    return allClubs.filter((club) => {
+      const isCategoryMatch = selectedCategory === "ALL" || club.vendors?.vendor_name === selectedCategory;
+      const isSearchMatch = club.title.toLowerCase().includes(searchText.toLowerCase());
+      return isCategoryMatch && isSearchMatch;
+    });
+  }, [allClubs, selectedCategory, searchText]);
 
-    return isCategoryMatch;
-  });
-
+  // 페이지네이션 (동적 카테고리 때문에 api의 page 안 쓰고 직접 페이지네이션)
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, searchText]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentClubs = filteredClubs.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredClubs.length / itemsPerPage) || 1;
+
+  const handleClubClick = (id) => navigate(`/clubs/detail/${id}`);
+  const handleCategorySelect = (id) => {
+    setSelectedCategory(id);
+    setCurrentPage(1);
+  };
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
+  const [imminentEvents, setImminentEvents] = useState([]);
+  const [imminentLoading, setImminentLoading] = useState(false);
+  const [imminentError, setImminentError] = useState(null);
 
   useEffect(() => {
     const fetchImminentEvents = async () => {
@@ -122,23 +110,9 @@ const CBLPage = () => {
     fetchImminentEvents();
   }, []);
 
-  const currentClubs = filteredClubs;
-  const totalPages = pageInfo.total_pages || 1;
-
-  const handleClubClick = (id) => {
-    navigate(`/clubs/detail/${id}`);
-  };
-
-  const handlePageChange = (pageNumber) => {
-    if (pageNumber < 1 || pageNumber > totalPages) return;
-    setCurrentPage(pageNumber);
-    window.scrollTo(0, 0);
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <TabBar />
-
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           {/* 왼쪽 사이드바 */}
@@ -203,7 +177,7 @@ const CBLPage = () => {
                 {categories.map((cat) => (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
+                    onClick={() => handleCategorySelect(cat.id)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 
                       ${
                         selectedCategory === cat.id

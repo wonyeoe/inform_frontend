@@ -147,6 +147,7 @@ const EVLPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <TabBar />
+      
       <div className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           {/* 왼쪽 사이드바 */}
